@@ -1,0 +1,38 @@
+﻿@inherits ElementBase<ScrollViewer>
+
+<style>
+	.@UniqueClassCss {
+		grid-row: 1;
+		grid-column: 1;
+		overflow: clip;
+		box-sizing: border-box;
+		width: @WidthCss;
+		height: @HeightCss;
+		min-width: @MinWidthCss;
+		min-height: @MinHeightCss;
+		justify-self: @HorizontalAlignmentCss;
+		align-self: @VerticalAlignmentCss;
+		margin: @MarginCss;
+	}
+
+	.@UniqueClassCss > * {
+		width: @ChildWidthCss;
+		height: @ChildHeightCss;
+		min-width: @MinWidthCss;
+		min-height: @MinHeightCss;
+	}
+</style>
+<div class="@UniqueClassCss">
+	@ChildContent
+</div>
+
+@code {
+
+	protected override bool HorizontalStretch => HorizontalAlignment == HorizontalAlignment.Stretch && Parent.HorizontalScrollBarVisibility == ScrollBarVisibility.Disabled;
+
+	protected override bool VerticalStretch => VerticalAlignment == VerticalAlignment.Stretch && Parent.VerticalScrollBarVisibility == ScrollBarVisibility.Disabled;
+
+	string MinWidthCss => Width is null && HorizontalAlignment == HorizontalAlignment.Stretch ? "100%" : "0px";
+	
+	string MinHeightCss => Height is null && VerticalAlignment == VerticalAlignment.Stretch ? "100%" : "0px";
+}

@@ -1,0 +1,23 @@
+﻿@code {
+
+	[CascadingParameter]
+	public Grid Parent
+	{
+		get;
+		set;
+	} = default!;
+
+	[Parameter]
+	public string Height
+	{
+		get;
+		set;
+	} = "Auto";
+
+	protected override void OnParametersSet()
+	{
+		Parent.AddRow(this);
+		base.OnParametersSet();
+	}
+}
+

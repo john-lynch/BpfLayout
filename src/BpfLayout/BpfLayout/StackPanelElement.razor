@@ -1,0 +1,33 @@
+﻿@inherits ElementBase<StackPanel>
+
+<style>
+	.@UniqueClassCss {
+		flex: none;
+		overflow: clip;
+		box-sizing: border-box;
+		width: @WidthCss;
+		height: @HeightCss;
+		align-self: @AlignmentCss;
+		margin: @MarginCss;
+	}
+
+	.@UniqueClassCss > * {
+		width: @ChildWidthCss;
+		height: @ChildHeightCss;
+	}
+</style>
+<div class="@UniqueClassCss">
+	@ChildContent
+</div>
+
+@code {
+
+	protected override bool HorizontalStretch => HorizontalAlignment == HorizontalAlignment.Stretch && Parent.Orientation != Orientation.Horizontal;
+
+	protected override bool VerticalStretch => VerticalAlignment == VerticalAlignment.Stretch && Parent.Orientation != Orientation.Vertical;
+
+	string AlignmentCss => Parent.Orientation == Orientation.Horizontal
+		? VerticalAlignmentCss
+		: HorizontalAlignmentCss;
+
+}

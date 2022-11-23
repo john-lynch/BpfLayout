@@ -1,0 +1,47 @@
+﻿<div style="@StyleCss">
+    <CascadingValue IsFixed="true" TValue="ScrollViewer" Value="this">
+        @ChildContent
+    </CascadingValue>
+</div>
+
+@code {
+
+    [Parameter]
+    public RenderFragment? ChildContent
+    {
+        get;
+        set;
+    }
+
+    [Parameter]
+    public ScrollBarVisibility HorizontalScrollBarVisibility
+    {
+        get;
+        set;
+    } = ScrollBarVisibility.Disabled;
+
+    [Parameter]
+    public ScrollBarVisibility VerticalScrollBarVisibility
+    {
+        get;
+        set;
+    } = ScrollBarVisibility.Auto;
+
+    string StyleCss => $"display: grid; grid-template-rows: 1fr; grid-template-columns: 1fr; overflow-x: {OverflowXCss}; overflow-y: {OverflowYCss}; box-sizing: border-box;";
+
+    string OverflowXCss => GetOverflowCss(HorizontalScrollBarVisibility);
+
+    string OverflowYCss => GetOverflowCss(VerticalScrollBarVisibility);
+
+    string GetOverflowCss(ScrollBarVisibility visibility)
+    {
+        return visibility switch
+        {
+            ScrollBarVisibility.Disabled => "clip",
+            ScrollBarVisibility.Auto => "auto",
+            ScrollBarVisibility.Hidden => "hidden",
+            ScrollBarVisibility.Visible => "scroll",
+            _ => throw new ArgumentOutOfRangeException(nameof(visibility))
+        };
+    }
+}

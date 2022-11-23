@@ -1,0 +1,32 @@
+﻿<div style="@StyleCss">
+    <CascadingValue IsFixed="true" TValue="StackPanel" Value="this">
+        @ChildContent
+    </CascadingValue>
+</div>
+
+@code {
+
+    [Parameter]
+    public Orientation Orientation 
+    {
+        get;
+        set;
+    }
+
+    [Parameter]
+    public RenderFragment? ChildContent
+    {
+        get;
+        set;
+    }
+
+    string StyleCss => $"display: flex; flex-direction: {FlexDirectionCss}; flex-wrap: nowrap; overflow: clip; box-sizing: border-box;";
+
+    string FlexDirectionCss => Orientation switch
+    {
+        Orientation.Horizontal => "row",
+        Orientation.Vertical => "column",
+        _ => throw new ArgumentOutOfRangeException(nameof(Orientation))
+    };
+
+}

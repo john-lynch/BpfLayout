@@ -1,0 +1,68 @@
+﻿@inherits ElementBase<Grid>
+
+<style>
+	.@UniqueClassCss {
+		grid-row: @GridRowStartCss / span @GridRowSpanCss;
+		grid-column: @GridColumnStartCss / span @GridColumnSpanCss;
+		overflow: clip;
+		box-sizing: border-box;
+		width: @WidthCss;
+		height: @HeightCss;
+		min-width: 0;
+		min-height: 0;
+		justify-self: @HorizontalAlignmentCss;
+		align-self: @VerticalAlignmentCss;
+		margin: @MarginCss;
+	}
+
+	.@UniqueClassCss > * {
+		width: @ChildWidthCss;
+		height: @ChildHeightCss;
+	}
+</style>
+<div class="@UniqueClassCss">
+	@ChildContent
+</div>
+
+@code {
+
+	[Parameter]
+	public int Row
+	{
+		get;
+		set;
+	} = 0;
+
+	[Parameter]
+	public int Column
+	{
+		get;
+		set;
+	} = 0;
+
+	[Parameter]
+	public int RowSpan
+	{
+		get;
+		set;
+	} = 1;
+
+	[Parameter]
+	public int ColumnSpan
+	{
+		get;
+		set;
+	} = 1;
+
+	protected override bool HorizontalStretch => HorizontalAlignment == HorizontalAlignment.Stretch && !Parent.IsColumnSizedToContent(Column, ColumnSpan);
+
+	protected override bool VerticalStretch => VerticalAlignment == VerticalAlignment.Stretch && !Parent.IsRowSizedToContent(Row, RowSpan);
+
+	int GridRowStartCss => Row + 1;
+
+	int GridRowSpanCss => RowSpan;
+
+	int GridColumnStartCss => Column + 1;
+
+	int GridColumnSpanCss => ColumnSpan;
+}

@@ -1,0 +1,83 @@
+﻿<div style="@StyleCss">
+    <CascadingValue IsFixed="true" TValue="Grid" Value="this">
+        @GridRowDefinitions
+        @GridColumnDefinitions
+        @ChildContent
+    </CascadingValue>
+</div>
+
+@code {
+    List<GridRowDefinition> _rows = new();
+    List<GridColumnDefinition> _columns = new();
+
+    [Parameter]
+    public RenderFragment? GridRowDefinitions
+    {
+        get;
+        set;
+    }
+
+    [Parameter]
+    public RenderFragment? GridColumnDefinitions
+    {
+        get;
+        set;
+    }
+
+    [Parameter]
+    public RenderFragment? ChildContent
+    {
+        get;
+        set;
+    }
+
+    string StyleCss => $"display: grid; grid-template-rows: {GridTemplateRowsCss}; grid-template-columns: {GridTemplateColumnsCss}; overflow: clip; box-sizing: border-box;";
+
+    internal void AddRow(GridRowDefinition row)
+    {
+        _rows.Add(row);
+        StateHasChanged();
+    }
+
+    internal void AddColumn(GridColumnDefinition column)
+    {
+        _columns.Add(column);
+        StateHasChanged();
+    }
+
+    internal bool IsRowSizedToContent(int startIndex, int span)
+    {
+        return _rows.Skip(startIndex).Take(span).Any(r => string.Equals(r.Height.Trim(), "auto", StringComparison.OrdinalIgnoreCase));
+    }
+
+    internal bool IsColumnSizedToContent(int startIndex, int span)
+    {
+        return _columns.Skip(startIndex).Take(span).Any(r => string.Equals(r.Width.Trim(), "auto", StringComparison.OrdinalIgnoreCase));
+    }
+
+    string GridTemplateRowsCss => GetGridTemplateCss(_rows, r => r.Height);
+
+    string GridTemplateColumnsCss => GetGridTemplateCss(_columns, c => c.Width);
+
+    string GetGridTemplateCss<T>(IEnumerable<T> templateElements, Func<T, string> templateElementDimensionSelector) => templateElements.Any()
+        ? string.Join(' ', templateElements.Select(e => GetGridTemplateElementCss(templateElementDimensionSelector(e))))
+        : "max-content";
+
+    string GetGridTemplateElementCss(string dimensionSpec)
+    {
+        var dim = dimensionSpec.Trim();
+        if (string.Equals(dim, "auto", StringComparison.OrdinalIgnoreCase))
+        {
+            return "max-content";
+        }
+
+        if (dim.EndsWith('*'))
+        {
+            var frsStr = dim.Substring(0, dim.Length - 1);
+            var frs = frsStr.Any() ? double.Parse(frsStr) : 1.0;
+            return $"{frs}fr";
+        }
+
+        return $"{double.Parse(dim)}px";
+    }
+}
