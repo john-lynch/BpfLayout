@@ -1,0 +1,40 @@
+﻿@page "/grid"
+
+<PageTitle>BpfLayout Core Tests - Grid</PageTitle>
+
+<Grid>
+	<GridRowDefinitions>
+		<GridRowDefinition Height="Auto" />
+		<GridRowDefinition Height="Auto" />
+		<GridRowDefinition Height="*" />
+	</GridRowDefinitions>
+	<GridColumnDefinitions>
+		<GridColumnDefinition Width="Auto" />
+		<GridColumnDefinition Width="Auto" />
+		<GridColumnDefinition Width="*" />
+	</GridColumnDefinitions>
+	<ChildContent>
+		<GridElement Row="0" Column="0" Width="16" Height="16">
+			<Box FillColor="#0000FF" BorderColor="#FF0000" BorderThickness="3"/>
+		</GridElement>
+		<GridElement Row="1" Column="0" Width="32" Height="32">
+			<Box FillColor="#0000FF" BorderColor="#FF0000" BorderThickness="3"/>
+		</GridElement>
+		<GridElement Row="0" Column="1" Width="32" Height="32">
+			<Box FillColor="#0000FF" BorderColor="#FF0000" BorderThickness="3" />
+		</GridElement>
+		<GridElement Row="2" Column="1" Width="32" Height="32">
+			<Box FillColor="#0000FF" BorderColor="#FF0000" BorderThickness="3" />
+		</GridElement>
+		<GridElement Row="1" Column="2" Width="32" Height="32">
+			<Box FillColor="#0000FF" BorderColor="#FF0000" BorderThickness="3" />
+		</GridElement>
+		<GridElement Row="2" Column="2">
+			<Box FillColor="#0000FF" BorderColor="#FF0000" BorderThickness="3" />
+		</GridElement>
+	</ChildContent>
+</Grid>
+
+@code {
+
+}

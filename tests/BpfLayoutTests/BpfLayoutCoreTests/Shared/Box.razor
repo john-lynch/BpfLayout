@@ -1,0 +1,43 @@
+﻿@using System.Text
+
+<div style="@StyleCss"/>
+
+@code {
+	[Parameter]
+	public string FillColor { get; set; } = "#0000FF";
+
+	[Parameter]
+	public string BorderColor { get; set; } = "#FF0000";
+
+	[Parameter]
+	public int BorderThickness { get; set; } = 1;
+
+	[Parameter]
+	public string? Width { get; set; }
+
+	[Parameter]
+	public string? Height { get; set; }
+
+	string StyleCss
+	{
+		get
+		{
+			StringBuilder sb = new();
+
+			sb.Append($"box-sizing: border-box; border-style: solid; background-color: {FillColor}; border-color: {BorderColor}; border-width: {BorderThickness}px");
+
+			if (Width is string w)
+			{
+				sb.Append($"; width: {w}");
+			}
+
+			if (Height is string h)
+			{
+				sb.Append($"; height: {h}");
+			}
+
+			return sb.ToString();
+		}
+	}
+
+}
