@@ -66,27 +66,27 @@ namespace BpfLayout
 
         protected abstract bool VerticalStretch { get; }
 
-        protected string ChildWidthCss => Width is not null || HorizontalStretch
+        protected string FillWidthCss => Width is not null || HorizontalStretch
             ? "100%"
             : "fit-content";
 
-        protected string ChildHeightCss => Height is not null || VerticalStretch
+        protected string FillHeightCss => Height is not null || VerticalStretch
             ? "100%"
             : "fit-content";
 
-        protected string WidthCss => Width is double w
+        protected string ElementWidthCss => Width is double w
             ? $"{w}px"
             : (HorizontalStretch ? "100%" : "fit-content");
 
-        protected string HeightCss => Height is double h
+        protected string ElementHeightCss => Height is double h
             ? $"{h}px"
             : (VerticalStretch ? "100%" : "fit-content");
 
         protected string HorizontalAlignmentCss => HorizontalAlignment switch
         {
-            HorizontalAlignment.Left => "flex-start",
+            HorizontalAlignment.Left => "start",
             HorizontalAlignment.Center => "center",
-            HorizontalAlignment.Right => "flex-end",
+            HorizontalAlignment.Right => "end",
             HorizontalAlignment.Stretch when Width is not null => "center",
             HorizontalAlignment.Stretch => "stretch",
             _ => throw new ArgumentOutOfRangeException(nameof(HorizontalAlignment))
@@ -94,9 +94,9 @@ namespace BpfLayout
 
         protected string VerticalAlignmentCss => VerticalAlignment switch
         {
-            VerticalAlignment.Top => "flex-start",
+            VerticalAlignment.Top => "start",
             VerticalAlignment.Center => "center",
-            VerticalAlignment.Bottom => "flex-end",
+            VerticalAlignment.Bottom => "end",
             VerticalAlignment.Stretch when Height is not null => "center",
             VerticalAlignment.Stretch => "stretch",
             _ => throw new ArgumentOutOfRangeException(nameof(VerticalAlignment))

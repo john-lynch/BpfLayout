@@ -6,18 +6,27 @@
 		grid-column: @GridColumnStartCss / span @GridColumnSpanCss;
 		overflow: clip;
 		box-sizing: border-box;
-		width: @WidthCss;
-		height: @HeightCss;
+		/*width: @ElementWidthCss;
+		height: @ElementHeightCss;*/
+		width: 100%;
+		height: 100%;
 		min-width: 0;
 		min-height: 0;
-		justify-self: @HorizontalAlignmentCss;
+		/*justify-self: @HorizontalAlignmentCss;
 		align-self: @VerticalAlignmentCss;
-		margin: @MarginCss;
+		margin: @MarginCss;*/
+		display: grid;
+		grid-template-rows: 100%;
+		grid-template-columns: 100%;
+		justify-items: @HorizontalAlignmentCss;
+		align-items: @VerticalAlignmentCss;
 	}
 
 	.@UniqueClassCss > * {
-		width: @ChildWidthCss;
-		height: @ChildHeightCss;
+		width: @ElementWidthCss;
+		height: @ElementHeightCss;
+		margin: @MarginCss;
+		box-sizing: border-box;
 	}
 </style>
 <div class="@UniqueClassCss">

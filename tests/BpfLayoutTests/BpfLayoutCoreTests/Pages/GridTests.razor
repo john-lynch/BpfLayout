@@ -6,11 +6,13 @@
 	<GridRowDefinitions>
 		<GridRowDefinition Height="Auto" />
 		<GridRowDefinition Height="Auto" />
+		<GridRowDefinition Height="100"/>
 		<GridRowDefinition Height="*" />
 	</GridRowDefinitions>
 	<GridColumnDefinitions>
 		<GridColumnDefinition Width="Auto" />
 		<GridColumnDefinition Width="Auto" />
+		<GridColumnDefinition Width="100" />
 		<GridColumnDefinition Width="*" />
 	</GridColumnDefinitions>
 	<ChildContent>
@@ -31,6 +33,19 @@
 		</GridElement>
 		<GridElement Row="2" Column="2">
 			<Box FillColor="#0000FF" BorderColor="#FF0000" BorderThickness="3" />
+		</GridElement>
+		<GridElement Row="2" Column="3" Width="200" Height="200">
+			<Box FillColor="#FFFFFF" BorderColor="#00FF00" BorderThickness="5" />
+		</GridElement>
+		<GridElement Row="3" Column="2" Width="200" VerticalAlignment="BpfLayout.VerticalAlignment.Bottom">
+			<Box FillColor="#FFFFFF" BorderColor="#00FF00" BorderThickness="5" />
+		</GridElement>
+		<GridElement Row="3" Column="3">
+			<ScrollViewer>
+				<ScrollViewerElement Height="1000">
+					<Box FillColor="#FFFFFF" BorderColor="#00FF00" BorderThickness="5" />
+				</ScrollViewerElement>
+			</ScrollViewer>
 		</GridElement>
 	</ChildContent>
 </Grid>

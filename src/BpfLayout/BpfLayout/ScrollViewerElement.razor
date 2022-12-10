@@ -6,8 +6,8 @@
 		grid-column: 1;
 		overflow: clip;
 		box-sizing: border-box;
-		width: @WidthCss;
-		height: @HeightCss;
+		width: @ElementWidthCss;
+		height: @ElementHeightCss;
 		min-width: @MinWidthCss;
 		min-height: @MinHeightCss;
 		justify-self: @HorizontalAlignmentCss;
@@ -16,8 +16,8 @@
 	}
 
 	.@UniqueClassCss > * {
-		width: @ChildWidthCss;
-		height: @ChildHeightCss;
+		width: @FillWidthCss;
+		height: @FillHeightCss;
 		min-width: @MinWidthCss;
 		min-height: @MinHeightCss;
 	}
