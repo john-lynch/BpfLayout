@@ -1,20 +1,26 @@
 ﻿@inherits ElementBase<Grid>
 
 <style>
+	/*
+		Here's how this works: we need each grid element to have a containing div that
+		clips contents to the boundary of its grid cell. To accomplish this, we have the
+		containing div size itself to 100%, which should cause it to take its width and
+		height right from the grid template specification. It then uses grid display
+		itself, with one row and one column that take up the entirity of the containing
+		div, so that it can align its child element correctly. This is done using
+		justify-items and align-items, which seem to work best regardless of what element
+		is contained. The contained element then has its width, height, and margin supplied
+		directly.
+	*/
 	.@UniqueClassCss {
 		grid-row: @GridRowStartCss / span @GridRowSpanCss;
 		grid-column: @GridColumnStartCss / span @GridColumnSpanCss;
 		overflow: clip;
 		box-sizing: border-box;
-		/*width: @ElementWidthCss;
-		height: @ElementHeightCss;*/
 		width: 100%;
 		height: 100%;
 		min-width: 0;
 		min-height: 0;
-		/*justify-self: @HorizontalAlignmentCss;
-		align-self: @VerticalAlignmentCss;
-		margin: @MarginCss;*/
 		display: grid;
 		grid-template-rows: 100%;
 		grid-template-columns: 100%;
@@ -23,6 +29,8 @@
 	}
 
 	.@UniqueClassCss > * {
+		grid-row: 1;
+		grid-column: 1;
 		width: @ElementWidthCss;
 		height: @ElementHeightCss;
 		margin: @MarginCss;
