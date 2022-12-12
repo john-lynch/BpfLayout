@@ -27,7 +27,7 @@
         set;
     } = ScrollBarVisibility.Auto;
 
-    string StyleCss => $"display: grid; grid-template-rows: 1fr; grid-template-columns: 1fr; overflow-x: {OverflowXCss}; overflow-y: {OverflowYCss}; box-sizing: border-box;";
+    string StyleCss => $"display: grid; grid-template-rows: 100%; grid-template-columns: 100%; overflow-x: {OverflowXCss}; overflow-y: {OverflowYCss}; box-sizing: border-box;";
 
     string OverflowXCss => GetOverflowCss(HorizontalScrollBarVisibility);
 
