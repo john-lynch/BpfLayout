@@ -7,10 +7,7 @@
 		containing div size itself to 100%, which should cause it to take its width and
 		height right from the grid template specification. It then uses grid display
 		itself, with one row and one column that take up the entirity of the containing
-		div, so that it can align its child element correctly. This is done using
-		justify-items and align-items, which seem to work best regardless of what element
-		is contained. The contained element then has its width, height, and margin supplied
-		directly.
+		div, so that it can align its child element correctly.
 	*/
 	.@UniqueClassCss {
 		grid-row: @GridRowStartCss / span @GridRowSpanCss;
