@@ -3,7 +3,7 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.3.32929.385
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BpfLayoutCoreTests", "BpfLayoutCoreTests\BpfLayoutCoreTests.csproj", "{B57179C1-E3E6-47D5-B780-AF868E457DFC}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BpfLayoutCoreTests", "BpfLayoutCoreTests\BpfLayoutCoreTests.csproj", "{B57179C1-E3E6-47D5-B780-AF868E457DFC}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BpfLayout", "..\..\src\BpfLayout\BpfLayout\BpfLayout.csproj", "{B491570A-EEDA-41DD-A323-077E8A1702CE}"
 EndProject
