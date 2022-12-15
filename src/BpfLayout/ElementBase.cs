@@ -82,7 +82,7 @@ namespace BpfLayout
             ? $"{h}px"
             : (VerticalStretch ? "100%" : "fit-content");
 
-        protected string HorizontalAlignmentCss => HorizontalAlignment switch
+        protected virtual string HorizontalAlignmentCss => HorizontalAlignment switch
         {
             HorizontalAlignment.Left => "start",
             HorizontalAlignment.Center => "center",
@@ -92,7 +92,7 @@ namespace BpfLayout
             _ => throw new ArgumentOutOfRangeException(nameof(HorizontalAlignment))
         };
 
-        protected string VerticalAlignmentCss => VerticalAlignment switch
+        protected virtual string VerticalAlignmentCss => VerticalAlignment switch
         {
             VerticalAlignment.Top => "start",
             VerticalAlignment.Center => "center",
