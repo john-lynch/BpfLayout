@@ -9,12 +9,13 @@
     <PackageLicenseFile>LICENSE</PackageLicenseFile>
     <PackageRequireLicenseAcceptance>True</PackageRequireLicenseAcceptance>
     <Title>BPF Layout</Title>
-    <Version>0.1.0</Version>
+    <Version>0.2.0</Version>
     <AssemblyVersion>0.0.0.0</AssemblyVersion>
     <Authors>jplynch</Authors>
     <PackageProjectUrl>https://github.com/john-lynch/BpfLayout</PackageProjectUrl>
     <RepositoryType>git</RepositoryType>
     <Company />
+    <Description>A collection of Razor components that mimic WPF panels like Grid, StackPanel, and ScrollViewer to make designing layouts in Blazor more intuitive.</Description>
   </PropertyGroup>
 
   <ItemGroup>
