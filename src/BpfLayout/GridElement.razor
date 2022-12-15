@@ -24,8 +24,6 @@
 		display: grid;
 		grid-template-rows: 100%;
 		grid-template-columns: 100%;
-		justify-items: @HorizontalAlignmentCss;
-		align-items: @VerticalAlignmentCss;
 	}
 
 	.@UniqueClassCss > * {
@@ -35,6 +33,8 @@
 		height: @ElementHeightCss;
 		margin: @MarginCss;
 		box-sizing: border-box;
+		justify-self: @HorizontalAlignmentCss;
+		align-self: @VerticalAlignmentCss;
 	}
 </style>
 <div class="@UniqueClassCss">
