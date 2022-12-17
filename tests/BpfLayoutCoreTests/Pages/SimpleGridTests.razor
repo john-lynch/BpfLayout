@@ -8,8 +8,21 @@
 		<GridRowDefinition />
 	</GridRowDefinitions>
 	<ChildContent>
-		<GridElement Row="0" Column="0" Width="400" Height="32">
-			<Box FillColor="#0000FF" BorderColor="#FF0000" BorderThickness="3" />
+		<GridElement Row="0" Column="0" Width="400">
+			<Grid>
+				<GridColumnDefinitions>
+					<GridColumnDefinition/>
+					<GridColumnDefinition Width="auto"/>
+				</GridColumnDefinitions>
+				<ChildContent>
+					<GridElement Row="0" Column="0">
+						<Box FillColor="#0000FF" BorderColor="#FF0000" BorderThickness="3" />
+					</GridElement>
+					<GridElement Row="0" Column="1" Width="50" Margin="new BpfLayout.Thickness(25)">
+						<Box FillColor="#0000FF" BorderColor="#FF0000" BorderThickness="3" />
+					</GridElement>
+				</ChildContent>
+			</Grid>
 		</GridElement>
 		<GridElement Row="1" Column="0" Height="400">
 			<Box FillColor="#0000FF" BorderColor="#FF0000" BorderThickness="3" />

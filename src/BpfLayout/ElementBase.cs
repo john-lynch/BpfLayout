@@ -102,6 +102,6 @@ namespace BpfLayout
             _ => throw new ArgumentOutOfRangeException(nameof(VerticalAlignment))
         };
 
-        protected string MarginCss => $"{Margin.Top} {Margin.Right} {Margin.Bottom} {Margin.Left}";
+        protected string MarginCss => $"{Margin.Top}px {Margin.Right}px {Margin.Bottom}px {Margin.Left}px";
     }
 }
