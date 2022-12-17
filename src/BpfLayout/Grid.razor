@@ -61,7 +61,7 @@
 
     string GetGridTemplateCss<T>(IEnumerable<T> templateElements, Func<T, string> templateElementDimensionSelector) => templateElements.Any()
         ? string.Join(' ', templateElements.Select(e => GetGridTemplateElementCss(templateElementDimensionSelector(e))))
-        : "max-content";
+        : "1fr";
 
     string GetGridTemplateElementCss(string dimensionSpec)
     {
