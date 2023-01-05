@@ -7,6 +7,20 @@
 @code {
 
     [Parameter]
+    public string RootWidthCss
+    {
+        get;
+        set;
+    } = "100%";
+
+    [Parameter]
+    public string RootHeightCss
+    {
+        get;
+        set;
+    } = "100%";
+
+    [Parameter]
     public RenderFragment? ChildContent
     {
         get;
@@ -27,7 +41,7 @@
         set;
     } = ScrollBarVisibility.Auto;
 
-    string StyleCss => $"display: grid; grid-template-rows: 100%; grid-template-columns: 100%; overflow-x: {OverflowXCss}; overflow-y: {OverflowYCss}; box-sizing: border-box;";
+    string StyleCss => $"display: grid; grid-template-rows: 100%; grid-template-columns: 100%; overflow-x: {OverflowXCss}; overflow-y: {OverflowYCss}; box-sizing: border-box; width: {RootWidthCss}; height: {RootHeightCss};";
 
     string OverflowXCss => GetOverflowCss(HorizontalScrollBarVisibility);
 

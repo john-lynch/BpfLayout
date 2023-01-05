@@ -11,6 +11,20 @@
     List<GridColumnDefinition> _columns = new();
 
     [Parameter]
+    public string RootWidthCss
+    {
+        get;
+        set;
+    } = "100%";
+
+    [Parameter]
+    public string RootHeightCss
+    {
+        get;
+        set;
+    } = "100%";
+
+    [Parameter]
     public RenderFragment? GridRowDefinitions
     {
         get;
@@ -31,7 +45,7 @@
         set;
     }
 
-    string StyleCss => $"display: grid; grid-template-rows: {GridTemplateRowsCss}; grid-template-columns: {GridTemplateColumnsCss}; overflow: clip; box-sizing: border-box;";
+    string StyleCss => $"display: grid; grid-template-rows: {GridTemplateRowsCss}; grid-template-columns: {GridTemplateColumnsCss}; overflow: clip; box-sizing: border-box; width: {RootWidthCss}; height: {RootHeightCss};";
 
     internal void AddRow(GridRowDefinition row)
     {

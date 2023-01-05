@@ -7,6 +7,20 @@
 @code {
 
     [Parameter]
+    public string RootWidthCss
+    {
+        get;
+        set;
+    } = "100%";
+
+    [Parameter]
+    public string RootHeightCss
+    {
+        get;
+        set;
+    } = "100%";
+
+    [Parameter]
     public Orientation Orientation 
     {
         get;
@@ -20,7 +34,7 @@
         set;
     }
 
-    string StyleCss => $"display: flex; flex-direction: {FlexDirectionCss}; flex-wrap: nowrap; overflow: clip; box-sizing: border-box;";
+    string StyleCss => $"display: flex; flex-direction: {FlexDirectionCss}; flex-wrap: nowrap; overflow: clip; box-sizing: border-box; width: {RootWidthCss}; height: {RootHeightCss}";
 
     string FlexDirectionCss => Orientation switch
     {
