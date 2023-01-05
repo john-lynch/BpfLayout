@@ -9,7 +9,7 @@
 		itself, with one row and one column that take up the entirity of the containing
 		div, so that it can align its child element correctly.
 	*/
-	.@UniqueClassCss {
+	.@UniqueClassCssForClipContainer {
 		grid-row: @GridRowStartCss / span @GridRowSpanCss;
 		grid-column: @GridColumnStartCss / span @GridColumnSpanCss;
 		overflow: clip;
@@ -23,20 +23,34 @@
 		grid-template-columns: 100%;
 	}
 
-	.@UniqueClassCss > * {
+	.@UniqueClassCssForMarginContainer {
 		grid-row: 1;
 		grid-column: 1;
-		width: @ElementWidthCss;
-		height: @ElementHeightCss;
-		margin: @MarginCss;
 		overflow: clip;
 		box-sizing: border-box;
+		width: @ContainerWidthCss;
+		height: @ContainerHeightCss;
+		padding: @MarginCss;
 		justify-self: @HorizontalAlignmentCss;
 		align-self: @VerticalAlignmentCss;
+		display: grid;
+		grid-template-rows: 100%;
+		grid-template-columns: 100%;
+	}
+
+	.@UniqueClassCssForMarginContainer > * {
+		grid-row: 1;
+		grid-column: 1;
+		overflow: clip;
+		box-sizing: border-box;
+		width: @ElementWidthCss;
+		height: @ElementHeightCss;
 	}
 </style>
-<div class="@UniqueClassCss">
-	@ChildContent
+<div class="@UniqueClassCssForClipContainer">
+	<div class="@UniqueClassCssForMarginContainer">
+		@ChildContent
+	</div>
 </div>
 
 @code {
@@ -69,9 +83,9 @@
 		set;
 	} = 1;
 
-	protected override bool HorizontalStretch => HorizontalAlignment == HorizontalAlignment.Stretch && !Parent.IsColumnSizedToContent(Column, ColumnSpan);
+	protected override bool HorizontalStretchForImplicitWidth => HorizontalAlignment == HorizontalAlignment.Stretch && !Parent.IsColumnSizedToContent(Column, ColumnSpan);
 
-	protected override bool VerticalStretch => VerticalAlignment == VerticalAlignment.Stretch && !Parent.IsRowSizedToContent(Row, RowSpan);
+	protected override bool VerticalStretchForImplicitHeight => VerticalAlignment == VerticalAlignment.Stretch && !Parent.IsRowSizedToContent(Row, RowSpan);
 
 	int GridRowStartCss => Row + 1;
 

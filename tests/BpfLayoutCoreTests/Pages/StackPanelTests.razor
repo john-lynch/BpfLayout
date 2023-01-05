@@ -3,34 +3,34 @@
 <PageTitle>BpfLayout Core Tests - StackPanel</PageTitle>
 
 <StackPanel>
-	<StackPanelElement Height="50" VerticalAlignment="@BpfLayout.VerticalAlignment.Center">
+	<StackPanelElement Height="50" VerticalAlignment="VerticalAlignment.Center">
 		<Box BorderColor="#FFFF00" BorderThickness="3" FillColor="#0000FF" Width="100px"/>
 	</StackPanelElement>
-	<StackPanelElement Height="50" VerticalAlignment="@BpfLayout.VerticalAlignment.Top">
+	<StackPanelElement Height="50" VerticalAlignment="VerticalAlignment.Top">
 		<Box BorderColor="#FFFF00" BorderThickness="3" FillColor="#0000FF" Width="100px"/>
 	</StackPanelElement>
-	<StackPanelElement Height="50" VerticalAlignment="@BpfLayout.VerticalAlignment.Bottom">
+	<StackPanelElement Height="50" VerticalAlignment="VerticalAlignment.Bottom">
 		<Box BorderColor="#FFFF00" BorderThickness="3" FillColor="#0000FF" Width="100px"/>
 	</StackPanelElement>
-	<StackPanelElement VerticalAlignment="@BpfLayout.VerticalAlignment.Stretch">
+	<StackPanelElement VerticalAlignment="VerticalAlignment.Stretch" Margin="new Thickness(5)">
 		<Box BorderColor="#FFFF00" BorderThickness="3" FillColor="#0000FF" Width="100px" />
 	</StackPanelElement>
 	<StackPanelElement Width="500">
-		<StackPanel Orientation="@BpfLayout.Orientation.Vertical">
-			<StackPanelElement Width="50" HorizontalAlignment="@BpfLayout.HorizontalAlignment.Center">
+		<StackPanel Orientation="BpfLayout.Orientation.Vertical">
+			<StackPanelElement Width="50" HorizontalAlignment="BpfLayout.HorizontalAlignment.Center">
 				<Box BorderColor="#FFFF00" BorderThickness="3" FillColor="#0000FF" Height="100px" />
 			</StackPanelElement>
-			<StackPanelElement Width="50" HorizontalAlignment="@BpfLayout.HorizontalAlignment.Left">
+			<StackPanelElement Width="50" HorizontalAlignment="BpfLayout.HorizontalAlignment.Left">
 				<Box BorderColor="#FFFF00" BorderThickness="3" FillColor="#0000FF" Height="100px" />
 			</StackPanelElement>
-			<StackPanelElement Width="50" HorizontalAlignment="@BpfLayout.HorizontalAlignment.Right">
+			<StackPanelElement Width="50" HorizontalAlignment="BpfLayout.HorizontalAlignment.Right">
 				<Box BorderColor="#FFFF00" BorderThickness="3" FillColor="#0000FF" Height="100px" />
 			</StackPanelElement>
-			<StackPanelElement HorizontalAlignment="@BpfLayout.HorizontalAlignment.Stretch">
+			<StackPanelElement HorizontalAlignment="BpfLayout.HorizontalAlignment.Stretch">
 				<Box BorderColor="#FFFF00" BorderThickness="3" FillColor="#0000FF" Height="100px" />
 			</StackPanelElement>
 			<StackPanelElement Height="200">
-				<ScrollViewer VerticalScrollBarVisibility="@BpfLayout.ScrollBarVisibility.Visible" HorizontalScrollBarVisibility="@BpfLayout.ScrollBarVisibility.Visible">
+				<ScrollViewer VerticalScrollBarVisibility="ScrollBarVisibility.Visible" HorizontalScrollBarVisibility="ScrollBarVisibility.Visible">
 					<ScrollViewerElement Width="5000" Height="5000">
 						<Box BorderColor="#FFFF00" BorderThickness="3" FillColor="#0000FF" />
 					</ScrollViewerElement>

@@ -1,42 +1,47 @@
 ﻿@inherits ElementBase<ScrollViewer>
 
 <style>
-	.@UniqueClassCss {
+	.@UniqueClassCssForMarginContainer {
 		grid-row: 1;
 		grid-column: 1;
 		overflow: clip;
 		box-sizing: border-box;
-		width: @ElementWidthCss;
-		height: @ElementHeightCss;
+		padding: @MarginCss;
+		width: @ContainerWidthCss;
+		height: @ContainerHeightCss;
 		min-width: @MinWidthCss;
 		min-height: @MinHeightCss;
 		justify-self: @HorizontalAlignmentCss;
 		align-self: @VerticalAlignmentCss;
-		margin: @MarginCss;
+		display: grid;
+		grid-template-rows: 100%;
+		grid-template-columns: 100%;
 	}
 
-	.@UniqueClassCss > * {
-		width: @FillWidthCss;
-		height: @FillHeightCss;
+	.@UniqueClassCssForMarginContainer > * {
+		grid-row: 1;
+		grid-column: 1;
+		width: @ElementWidthCss;
+		height: @ElementHeightCss;
 		min-width: @MinWidthCss;
 		min-height: @MinHeightCss;
 	}
 </style>
-<div class="@UniqueClassCss">
+<div class="@UniqueClassCssForMarginContainer">
 	@ChildContent
 </div>
 
 @code {
 
-	protected override bool HorizontalStretch => HorizontalAlignment == HorizontalAlignment.Stretch && Parent.HorizontalScrollBarVisibility == ScrollBarVisibility.Disabled;
+	protected override bool HorizontalStretchForImplicitWidth => HorizontalAlignment == HorizontalAlignment.Stretch && Parent.HorizontalScrollBarVisibility == ScrollBarVisibility.Disabled;
 
-	protected override bool VerticalStretch => VerticalAlignment == VerticalAlignment.Stretch && Parent.VerticalScrollBarVisibility == ScrollBarVisibility.Disabled;
+	protected override bool VerticalStretchForImplicitHeight => VerticalAlignment == VerticalAlignment.Stretch && Parent.VerticalScrollBarVisibility == ScrollBarVisibility.Disabled;
 
 	protected override string HorizontalAlignmentCss => Parent.HorizontalScrollBarVisibility == ScrollBarVisibility.Disabled ? base.HorizontalAlignmentCss : "start";
 
 	protected override string VerticalAlignmentCss => Parent.VerticalScrollBarVisibility == ScrollBarVisibility.Disabled ? base.VerticalAlignmentCss : "start";
 
-	string MinWidthCss => Width is null && HorizontalAlignment == HorizontalAlignment.Stretch ? "100%" : "0px";
+	string MinWidthCss => HorizontalStretch ? "100%" : "0px";
 
-	string MinHeightCss => Height is null && VerticalAlignment == VerticalAlignment.Stretch ? "100%" : "0px";
+	string MinHeightCss => VerticalStretch ? "100%" : "0px";
 }

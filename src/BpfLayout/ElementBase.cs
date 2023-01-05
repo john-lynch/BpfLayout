@@ -11,7 +11,9 @@ namespace BpfLayout
     {
         Guid _uid = Guid.NewGuid();
 
-        protected string UniqueClassCss => $"bpf-layout-uid-{_uid}";
+        protected string UniqueClassCssForClipContainer => $"bpf-layout-clip-{_uid}";
+
+        protected string UniqueClassCssForMarginContainer => $"bpf-layout-margin-{_uid}";
 
         [Parameter]
         public double? Width
@@ -62,25 +64,29 @@ namespace BpfLayout
             set;
         }
 
-        protected abstract bool HorizontalStretch { get; }
+        protected bool ImplicitWidth => Width is null;
 
-        protected abstract bool VerticalStretch { get; }
+        protected bool ImplicitHeight => Height is null;
 
-        protected string FillWidthCss => Width is not null || HorizontalStretch
-            ? "100%"
-            : "fit-content";
+        protected abstract bool HorizontalStretchForImplicitWidth { get; }
 
-        protected string FillHeightCss => Height is not null || VerticalStretch
-            ? "100%"
-            : "fit-content";
+        protected abstract bool VerticalStretchForImplicitHeight { get; }
 
         protected string ElementWidthCss => Width is double w
             ? $"{w}px"
-            : (HorizontalStretch ? "100%" : "fit-content");
+            : (HorizontalStretchForImplicitWidth ? "100%" : "max-content");
 
         protected string ElementHeightCss => Height is double h
             ? $"{h}px"
-            : (VerticalStretch ? "100%" : "fit-content");
+            : (VerticalStretchForImplicitHeight ? "100%" : "max-content");
+
+        protected bool HorizontalStretch => ImplicitWidth && HorizontalStretchForImplicitWidth;
+
+        protected bool VerticalStretch => ImplicitHeight && VerticalStretchForImplicitHeight;
+
+        protected string ContainerWidthCss => HorizontalStretch ? "100%" : "max-content";
+
+        protected string ContainerHeightCss => VerticalStretch ? "100%" : "max-content";
 
         protected virtual string HorizontalAlignmentCss => HorizontalAlignment switch
         {
