@@ -9,7 +9,7 @@
     <PackageLicenseFile>LICENSE</PackageLicenseFile>
     <PackageRequireLicenseAcceptance>True</PackageRequireLicenseAcceptance>
     <Title>BPF Layout</Title>
-    <Version>0.2.0</Version>
+    <Version>0.3.0</Version>
     <AssemblyVersion>0.0.0.0</AssemblyVersion>
     <Authors>jplynch</Authors>
     <PackageProjectUrl>https://github.com/john-lynch/BpfLayout</PackageProjectUrl>
