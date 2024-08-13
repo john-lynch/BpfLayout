@@ -1,4 +1,6 @@
-﻿@code {
+﻿@implements IDisposable
+
+@code {
 
 	[CascadingParameter]
 	public Grid Parent
@@ -18,6 +20,11 @@
 	{
 		Parent.AddColumn(this);
 		base.OnParametersSet();
+	}
+
+	public void Dispose()
+	{
+		Parent?.RemoveColumn(this);
 	}
 }
 

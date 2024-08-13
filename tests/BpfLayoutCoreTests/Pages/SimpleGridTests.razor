@@ -1,13 +1,20 @@
 ﻿@page "/simplegrid"
 
 <PageTitle>BpfLayout Core Tests - Simple Grid</PageTitle>
-
+<MudCheckBox @bind-Checked="@ShowBonusRow" Label="Show Bonus Row"/>
 <Grid>
 	<GridRowDefinitions>
 		<GridRowDefinition Height="Auto" />
 		<GridRowDefinition />
+		@if (ShowBonusRow)
+		{
+			<GridRowDefinition Height="100" />
+		}
 	</GridRowDefinitions>
 	<ChildContent>
+		<GridElement Row="2">
+			HELLO WORLD
+		</GridElement>
 		<GridElement Row="0" Column="0" Width="400">
 			<Grid>
 				<GridColumnDefinitions>
@@ -31,5 +38,5 @@
 </Grid>
 
 @code {
-
+	bool ShowBonusRow = true;
 }

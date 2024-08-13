@@ -59,6 +59,18 @@
         StateHasChanged();
     }
 
+    internal void RemoveRow(GridRowDefinition row)
+    {
+        _rows.Remove(row);
+        StateHasChanged();
+    }
+
+    internal void RemoveColumn(GridColumnDefinition column)
+    {
+        _columns.Remove(column);
+        StateHasChanged();
+    }
+
     internal bool IsRowSizedToContent(int startIndex, int span)
     {
         return _rows.Skip(startIndex).Take(span).Any(r => string.Equals(r.Height.Trim(), "auto", StringComparison.OrdinalIgnoreCase));
