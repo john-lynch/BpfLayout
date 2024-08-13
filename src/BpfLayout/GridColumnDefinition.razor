@@ -16,6 +16,13 @@
 		set;
 	} = "*";
 
+	[Parameter]
+	public int? SortOrder
+	{
+		get;
+		set;
+	} = default;
+
 	protected override void OnParametersSet()
 	{
 		Parent.AddColumn(this);

@@ -4,12 +4,12 @@
 <MudCheckBox @bind-Checked="@ShowBonusRow" Label="Show Bonus Row"/>
 <Grid>
 	<GridRowDefinitions>
-		<GridRowDefinition Height="Auto" />
-		<GridRowDefinition />
 		@if (ShowBonusRow)
 		{
-			<GridRowDefinition Height="100" />
+			<GridRowDefinition Height="100" SortOrder="2"/>
 		}
+		<GridRowDefinition Height="Auto" />
+		<GridRowDefinition />
 	</GridRowDefinitions>
 	<ChildContent>
 		<GridElement Row="2">
