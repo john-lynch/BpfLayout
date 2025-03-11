@@ -1,0 +1,40 @@
+﻿@page "/splitter"
+
+
+<PageTitle>BpfLayout Core Tests - Splitter</PageTitle>
+<Grid>
+	<GridColumnDefinitions>
+		<GridColumnDefinition Width="200" MinWidth="200" />
+		<GridColumnDefinition Width="10" />
+		<GridColumnDefinition Width="*" />
+	</GridColumnDefinitions>
+	<GridRowDefinitions>
+		<GridRowDefinition Height="*" />
+		<GridRowDefinition Height="10" />
+		<GridRowDefinition Height="*" />
+	</GridRowDefinitions>
+	<ChildContent>
+		<GridElement Column="0" Row="0">
+			<Box FillColor="#00FF00" BorderColor="#FF0000" BorderThickness="3" />
+		</GridElement>
+		<GridElement Column="0" Row="2">
+			<Box FillColor="#0000FF" BorderColor="#FF0000" BorderThickness="3" />
+		</GridElement>
+		<GridSplitter Column="1" RowSpan="3" />
+		<GridSplitter Row="1" ColumnSpan="3">
+			<div style="background-color: rgb(229, 231, 235); color: ButtonText; display: flex; justify-content: center; align-items: center;">
+				····
+			</div>
+		</GridSplitter>
+		<GridElement Column="2" Row="0">
+			<Box FillColor="#FF00FF" BorderColor="#FF0000" BorderThickness="3" />
+		</GridElement>
+		<GridElement Column="2" Row="2">
+			<Box FillColor="#00FFFF" BorderColor="#FF0000" BorderThickness="3" />
+		</GridElement>
+	</ChildContent>
+</Grid>
+
+@code {
+
+}

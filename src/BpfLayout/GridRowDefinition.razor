@@ -23,10 +23,24 @@
 		set;
 	} = default;
 
-	protected override void OnParametersSet()
+	[Parameter]
+	public double? MinHeight
+	{
+		get;
+		set;
+	} = default;
+
+	[Parameter]
+	public double? MaxHeight
+	{
+		get;
+		set;
+	} = default;
+
+	protected override void OnInitialized()
 	{
 		Parent.AddRow(this);
-		base.OnParametersSet();
+		base.OnInitialized();
 	}
 
 	public void Dispose()

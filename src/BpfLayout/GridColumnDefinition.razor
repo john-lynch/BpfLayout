@@ -23,10 +23,24 @@
 		set;
 	} = default;
 
-	protected override void OnParametersSet()
+	[Parameter]
+	public double? MinWidth
+	{
+		get;
+		set;
+	} = default;
+
+	[Parameter]
+	public double? MaxWidth
+	{
+		get;
+		set;
+	} = default;
+
+	protected override void OnInitialized()
 	{
 		Parent.AddColumn(this);
-		base.OnParametersSet();
+		base.OnInitialized();
 	}
 
 	public void Dispose()

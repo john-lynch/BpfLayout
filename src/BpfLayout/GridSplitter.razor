@@ -1,0 +1,26 @@
+@inherits GridElement
+
+<style>
+	.@UniqueClassCssForClipContainer {
+		cursor: @CursorMode;
+	}
+</style>
+
+@{
+	base.BuildRenderTree(__builder);
+}
+
+@code {
+	string CursorMode => Row > 0 ? "row-resize" : "col-resize";
+
+	protected override void OnInitialized()
+	{
+		Parent.AddSplitter(this);
+		base.OnInitialized();
+	}
+
+	public void Dispose()
+	{
+		Parent?.RemoveSplitter(this);
+	}
+}

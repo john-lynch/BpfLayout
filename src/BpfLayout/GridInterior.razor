@@ -1,0 +1,27 @@
+@*
+    This class is a hack so that we can have row and column definitions processed before we evaluate
+    the StyleCss property om Grid. By putting that evaluation on a child component, we get the Blazor
+    rendering logic to evaluate the rows and columns first (because they are ordered first inside 
+    Grid.razor). That causes StyleCss to have the correct value when we hit this component, so the
+    div is styled correctly, and the children are just transparently passed through from Grid.
+*@
+
+<div style="@Parent.StyleCss">
+    @ChildContent
+</div>
+
+@code {
+    [CascadingParameter]
+    public Grid Parent
+    {
+        get;
+        set;
+    } = default!;
+
+    [Parameter]
+    public RenderFragment? ChildContent
+    {
+        get;
+        set;
+    }
+}

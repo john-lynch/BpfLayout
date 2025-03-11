@@ -1,14 +1,27 @@
-﻿<div style="@StyleCss">
-    <CascadingValue IsFixed="true" TValue="Grid" Value="this">
-        @GridRowDefinitions
-        @GridColumnDefinitions
+﻿@implements IAsyncDisposable
+
+@inject IJSRuntime JSRuntime
+
+<CascadingValue IsFixed="true" TValue="Grid" Value="this">
+    @GridRowDefinitions
+    @GridColumnDefinitions
+
+    @*
+        GridInterior is a hack: it exists only to ensure that evaluation of the StyleCss
+        property occurs after row and column definitions have been registered. It is nothing
+        more than a div tag for the grid content that delays evaluation of StyleCss.
+    *@
+
+    <GridInterior>
         @ChildContent
-    </CascadingValue>
-</div>
+    </GridInterior>
+</CascadingValue>
 
 @code {
     List<GridRowDefinition> _rowsUnordered = new();
     List<GridColumnDefinition> _columnsUnordered = new();
+    List<GridSplitter> _splitters = new();
+    IJSObjectReference? _jsModule = default!;
 
     // OrderBy is used because it is a stable sort so that columns without explicit sort
     // order will maintain their relative position.
@@ -44,36 +57,70 @@
     }
 
     [Parameter]
+    public double RowSnapOffset
+    {
+        get;
+        set;
+    } = 0.0;
+
+    [Parameter]
+    public double ColumnSnapOffset
+    {
+        get;
+        set;
+    } = 0.0;
+
+    [Parameter]
+    public double RowDragInterval
+    {
+        get;
+        set;
+    } = 1.0;
+
+    [Parameter]
+    public double ColumnDragInterval
+    {
+        get;
+        set;
+    } = 1.0;
+
+    [Parameter]
     public RenderFragment? ChildContent
     {
         get;
         set;
     }
 
-    string StyleCss => $"display: grid; grid-template-rows: {GridTemplateRowsCss}; grid-template-columns: {GridTemplateColumnsCss}; overflow: clip; box-sizing: border-box; width: {RootWidthCss}; height: {RootHeightCss};";
+    internal string StyleCss => $"display: grid; grid-template-rows: {GridTemplateRowsCss}; grid-template-columns: {GridTemplateColumnsCss}; overflow: clip; box-sizing: border-box; width: {RootWidthCss}; height: {RootHeightCss};";
 
     internal void AddRow(GridRowDefinition row)
     {
         _rowsUnordered.Add(row);
-        StateHasChanged();
     }
 
     internal void AddColumn(GridColumnDefinition column)
     {
         _columnsUnordered.Add(column);
-        StateHasChanged();
     }
 
     internal void RemoveRow(GridRowDefinition row)
     {
         _rowsUnordered.Remove(row);
-        StateHasChanged();
     }
 
     internal void RemoveColumn(GridColumnDefinition column)
     {
         _columnsUnordered.Remove(column);
-        StateHasChanged();
+    }
+
+    internal void AddSplitter(GridSplitter splitter)
+    {
+        _splitters.Add(splitter);
+    }
+
+    internal void RemoveSplitter(GridSplitter splitter)
+    {
+        _splitters.Remove(splitter);
     }
 
     internal bool IsRowSizedToContent(int startIndex, int span)
@@ -86,13 +133,39 @@
         return Columns.Skip(startIndex).Take(span).Any(r => string.Equals(r.Width.Trim(), "auto", StringComparison.OrdinalIgnoreCase));
     }
 
-    string GridTemplateRowsCss => GetGridTemplateCss(Rows, r => r.Height);
+    string GridTemplateRowsCss => GetGridTemplateCss(Rows, r => (Dimension: r.Height, Min: r.MinHeight, Max: r.MaxHeight), s => s.Row);
 
-    string GridTemplateColumnsCss => GetGridTemplateCss(Columns, c => c.Width);
+    string GridTemplateColumnsCss => GetGridTemplateCss(Columns, c => (Dimension: c.Width, Min: c.MinWidth, Max: c.MaxWidth), s => s.Column);
 
-    string GetGridTemplateCss<T>(IEnumerable<T> templateElements, Func<T, string> templateElementDimensionSelector) => templateElements.Any()
-        ? string.Join(' ', templateElements.Select(e => GetGridTemplateElementCss(templateElementDimensionSelector(e))))
-        : "1fr";
+    string GetGridTemplateCss<T>(
+        IEnumerable<T> templateElements,
+        Func<T, (string Dimension, double? Min, double? Max)> templateElementDimensionSelector,
+        Func<GridSplitter, int> splitterTrackSelector) =>
+        templateElements.Any()
+            ? string.Join(
+                ' ',
+                templateElements
+                    .Select(e => templateElementDimensionSelector(e))
+                    .Zip(Enumerable.Range(0, int.MaxValue), (e, i) => (e.Dimension, e.Min, e.Max, Index: i))
+                    .Select(e => GetGridTemplateElementCss(e.Dimension, e.Min, e.Max, _splitters.Any(s => splitterTrackSelector(s) is var i && (i == e.Index - 1 || i == e.Index + 1)))))
+            : "1fr";
+
+    string GetGridTemplateElementCss(string dimensionSpec, double? minDimension, double? maxDimension, bool nextToSplitter)
+    {
+        var dim = GetGridTemplateElementCss(dimensionSpec);
+
+        // If this track is next to a splitter, we have to let the splitter code handle the min
+        // and max logic.
+        if (nextToSplitter || (minDimension is null && maxDimension is null))
+        {
+            return dim;
+        }
+
+        string? min = minDimension is not null ? $"{minDimension}px" : null;
+        string? max = maxDimension is not null ? $"{maxDimension}px" : null;
+
+        return $"minmax({min ?? dim}, {max ?? dim})";
+    }
 
     string GetGridTemplateElementCss(string dimensionSpec)
     {
@@ -110,5 +183,81 @@
         }
 
         return $"{double.Parse(dim)}px";
+    }
+
+    record SplitterTrackDefinition(int Track, string CssSelector);
+
+    record TrackConstraint(int Track, double Constraint);
+
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        if (firstRender)
+        {
+            _jsModule = await JSRuntime.InvokeAsync<IJSObjectReference>("import", "./_content/BpfLayout/Grid.razor.js");
+
+            var rowSplitters = _splitters
+                .Where(splitter => splitter.Row > 0)
+                .Select(splitter => new SplitterTrackDefinition(splitter.Row, $".{splitter.UniqueClassCssForClipContainer}"))
+                .ToArray();
+
+            var columnSplitters = _splitters
+                .Where(splitter => splitter.Column > 0)
+                .Select(splitter => new SplitterTrackDefinition(splitter.Column, $".{splitter.UniqueClassCssForClipContainer}"))
+                .ToArray();
+
+            bool hasRowSplitters = rowSplitters.Length > 0;
+            bool hasColumnSplitters = columnSplitters.Length > 0;
+            if (hasRowSplitters || hasColumnSplitters)
+            {
+                var rowMinConstraints = hasRowSplitters ? CreateConstraints(Rows, r => r.MinHeight) : [];
+                var rowMaxConstraints = hasRowSplitters ? CreateConstraints(Rows, r => r.MaxHeight) : [];
+                var columnMinConstraints = hasColumnSplitters ? CreateConstraints(Columns, c => c.MinWidth) : [];
+                var columnMaxConstraints = hasColumnSplitters ? CreateConstraints(Columns, c => c.MaxWidth) : [];
+
+                await _jsModule.InvokeVoidAsync(
+                    "initializeSplitters",
+                    rowSplitters,
+                    columnSplitters,
+                    rowMinConstraints,
+                    rowMaxConstraints,
+                    columnMinConstraints,
+                    columnMaxConstraints,
+                    RowSnapOffset,
+                    ColumnSnapOffset,
+                    RowDragInterval,
+                    ColumnDragInterval);
+
+                // If any of our splitters are associated with rows that have constraints, we need to rerender
+                // so that the splitter logic can take over the handling of those constraints.
+                if ((hasRowSplitters && (rowMinConstraints.Length > 0 || rowMaxConstraints.Length > 0))
+                    || (hasColumnSplitters && (columnMinConstraints.Length > 0 || columnMaxConstraints.Length > 0)))
+                {
+                    StateHasChanged();
+                }
+            }
+        }
+
+        await base.OnAfterRenderAsync(firstRender);
+
+        static TrackConstraint[] CreateConstraints<T>(IEnumerable<T> tracks, Func<T, double?> constraintSelector) => tracks
+                    .Zip(Enumerable.Range(0, int.MaxValue), (r, i) => (Constraint: constraintSelector(r), Index: i))
+                    .Where(pair => pair.Constraint.HasValue)
+                    .Select(pair => new TrackConstraint(pair.Index, pair.Constraint!.Value))
+                    .ToArray();
+    }
+
+    public async ValueTask DisposeAsync()
+    {
+        try
+        {
+            if (_jsModule is not null)
+            {
+                await _jsModule.DisposeAsync();
+            }
+        }
+        catch
+        {
+
+        }
     }
 }

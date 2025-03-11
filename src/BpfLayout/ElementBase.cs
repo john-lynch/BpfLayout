@@ -11,9 +11,9 @@ namespace BpfLayout
     {
         Guid _uid = Guid.NewGuid();
 
-        protected string UniqueClassCssForClipContainer => $"bpf-layout-clip-{_uid}";
+        internal string UniqueClassCssForClipContainer => $"bpf-layout-clip-{_uid}";
 
-        protected string UniqueClassCssForMarginContainer => $"bpf-layout-margin-{_uid}";
+        internal string UniqueClassCssForMarginContainer => $"bpf-layout-margin-{_uid}";
 
         [Parameter]
         public double? Width
