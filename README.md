@@ -1,9 +1,9 @@
 # BpfLayout
-A Blazor component library attempting to replicate WPF layout panels like Grid, StackPanel, and ScrollViewer in Blazor.
+A Blazor component library attempting to replicate WPF layout panels like Grid, StackPanel, ScrollViewer, and GridSplitter in Blazor.
 
 ## Why?
 
-As a programmer moving familiar with how layout works in WPF, moving to Blazor with its HTML/CSS-based layout was incredibly frustrating. Elements were constantly resizing themselves when I didn't expect them to, things would scroll as I expected, etc. I wanted something that could give me the control I had with WPF in Blazor.
+As a programmer familiar with how layout works in WPF, moving to Blazor with its HTML/CSS-based layout was incredibly frustrating. Elements were constantly resizing themselves when I didn't expect them to, things wouldn't scroll as I expected, etc. I wanted something that could give me the control I had with WPF in Blazor.
 
 ## Goals
 * Replicate as closely as possible the layout elements in WPF so that their use in Blazor would be intuitive.
