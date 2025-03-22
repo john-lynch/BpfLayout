@@ -1,29 +1,26 @@
 import './split-grid.js'
 
 function createConstraintObject(constraints) {
-    var cs = {}
+    let cs = {}
     constraints.forEach((c) => { cs[c.track] = c.constraint });
     return cs
 }
 
-var _split = null
-var _grid = null
-var _lastDragTemplate = null
+let _splitterState = {}
 
-export function updateSplitters(grid, rowSplitters, columnSplitters, rowMinConstraints, rowMaxConstraints, columnMinConstraints, columnMaxConstraints, rowSnapOffset, columnSnapOffset, rowDragInterval, columnDragInterval) {
+export function updateSplitters(id, grid, rowSplitters, columnSplitters, rowMinConstraints, rowMaxConstraints, columnMinConstraints, columnMaxConstraints, rowSnapOffset, columnSnapOffset, rowDragInterval, columnDragInterval) {
 
-    _grid = grid
-
-    if (_split != null) {
-        _split.destroy(true)
-        _split = null
+    if (_splitterState[id] !== undefined) {
+        _splitterState[id].destroy(true)
+        delete _splitterState[id]
     }
 
     if (rowSplitters.length == 0 && columnSplitters.length == 0) {
         return
     }
 
-    _split = Split({
+    let lastDragTemplate = ""
+    _splitterState[id] = Split({
         rowGutters: rowSplitters.map((row) => ({ track: row.track, element: document.querySelector(row.cssSelector) })),
         columnGutters: columnSplitters.map((column) => ({ track: column.track, element: document.querySelector(column.cssSelector) })),
         rowMinSizes: createConstraintObject(rowMinConstraints),
@@ -34,7 +31,13 @@ export function updateSplitters(grid, rowSplitters, columnSplitters, rowMinConst
         columnSnapOffset: columnSnapOffset,
         rowDragInterval: rowDragInterval,
         columnDragInterval: columnDragInterval,
-        onDrag: (direction, track, gridTemplate) => _lastDragTemplate = gridTemplate,
-        onDragEnd: (direction, track) => _grid.invokeMethodAsync("OnSplitterResizedGridAsync", direction == 'row', track, _lastDragTemplate)
+        onDrag: (direction, track, gridTemplate) => lastDragTemplate = gridTemplate,
+        onDragEnd: (direction, track) => grid.invokeMethodAsync("OnSplitterResizedGridAsync", direction == 'row', track, lastDragTemplate)
     })
+}
+
+export function disposeSplitters(id) {
+    if (_splitterState[id] !== undefined) {
+        delete _splitterState[id]
+    }
 }
