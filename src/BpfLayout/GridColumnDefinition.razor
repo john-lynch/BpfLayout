@@ -1,13 +1,7 @@
-﻿@implements IDisposable
+﻿@inherits GridTrackDefinitionBase
+@implements IDisposable
 
 @code {
-
-	[CascadingParameter]
-	public Grid Parent
-	{
-		get;
-		set;
-	} = default!;
 
 	[Parameter]
 	public string Width
@@ -15,13 +9,6 @@
 		get;
 		set;
 	} = "*";
-
-	[Parameter]
-	public int? SortOrder
-	{
-		get;
-		set;
-	} = default;
 
 	[Parameter]
 	public double? MinWidth
@@ -36,6 +23,14 @@
 		get;
 		set;
 	} = default;
+
+	internal override string Size => Width;
+
+	internal override double? MinSize => MinWidth;
+
+	internal override double? MaxSize => MaxWidth;
+
+	internal override int GetSplitterIndex(GridSplitter splitter) => splitter.Column;
 
 	protected override void OnInitialized()
 	{

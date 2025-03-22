@@ -2,39 +2,99 @@
 
 
 <PageTitle>BpfLayout Core Tests - Splitter</PageTitle>
+<MudCheckBox @bind-Checked="@_showThirdRow" Label="Third Row" />
+<MudCheckBox @bind-Checked="@_showThirdColumn" Label="Third Column" />
+<Grid SplitterResizedGrid="@GridResize">
+    <GridColumnDefinitions>
+        <GridColumnDefinition Width="200" MinWidth="200" />
+        <GridColumnDefinition Width="10" />
+        <GridColumnDefinition Width="*" />
+        @if(_showThirdColumn)
+        {
+            <GridColumnDefinition Width="auto" />
+        }
+    </GridColumnDefinitions>
+    <GridRowDefinitions>
+        <GridRowDefinition Height="*" />
+        <GridRowDefinition Height="10" />
+        <GridRowDefinition Height="*" />
+        @if (_showThirdRow)
+        {
+            <GridRowDefinition Height="10" />
+            <GridRowDefinition Height="*" />
+        }
+    </GridRowDefinitions>
+    <ChildContent>
+        <GridElement Column="0" Row="0" Margin="@(new Thickness(10))">
+            <Box FillColor="#00FF00" BorderColor="#FF0000" BorderThickness="3" />
+        </GridElement>
+        <GridElement Column="0" Row="2">
+            <Box FillColor="#0000FF" BorderColor="#FF0000" BorderThickness="3" />
+        </GridElement>
+        <GridSplitter Column="1" RowSpan="3" />
+        <GridSplitter Row="1" ColumnSpan="3">
+            <div style="background-color: rgb(229, 231, 235); color: ButtonText; display: flex; justify-content: center; align-items: center;">
+                ····
+            </div>
+        </GridSplitter>
+        <GridElement Column="2" Row="0">
+            <Box FillColor="#FF00FF" BorderColor="#FF0000" BorderThickness="3" />
+        </GridElement>
+        <GridElement Column="2" Row="2">
+            <Box FillColor="#00FFFF" BorderColor="#FF0000" BorderThickness="3" />
+        </GridElement>
+        @if (_showThirdRow)
+        {
+            <GridSplitter Row="3" ColumnSpan="3" />
+            <GridElement Column="0" Row="4">
+                <Box FillColor="#FFFF00" BorderColor="#FF0000" BorderThickness="3" />
+            </GridElement>
+            <GridElement Column="2" Row="4">
+                <Box FillColor="#FFFFFF" BorderColor="#FF0000" BorderThickness="3" />
+            </GridElement>
+        }
+        @if (_showThirdColumn)
+        {
+            <GridElement Column="3" Row="0" Width="200">
+                <Box FillColor="#FF00FF" BorderColor="#FF0000" BorderThickness="3" />
+            </GridElement>
+            <GridElement Column="3" Row="2" Width="300">
+                <Box FillColor="#00FFFF" BorderColor="#FF0000" BorderThickness="3" />
+            </GridElement>
+        }
+    </ChildContent>
+</Grid>
 <Grid>
-	<GridColumnDefinitions>
-		<GridColumnDefinition Width="200" MinWidth="200" />
-		<GridColumnDefinition Width="10" />
-		<GridColumnDefinition Width="*" />
-	</GridColumnDefinitions>
-	<GridRowDefinitions>
-		<GridRowDefinition Height="*" />
-		<GridRowDefinition Height="10" />
-		<GridRowDefinition Height="*" />
-	</GridRowDefinitions>
-	<ChildContent>
-		<GridElement Column="0" Row="0">
-			<Box FillColor="#00FF00" BorderColor="#FF0000" BorderThickness="3" />
-		</GridElement>
-		<GridElement Column="0" Row="2">
-			<Box FillColor="#0000FF" BorderColor="#FF0000" BorderThickness="3" />
-		</GridElement>
-		<GridSplitter Column="1" RowSpan="3" />
-		<GridSplitter Row="1" ColumnSpan="3">
-			<div style="background-color: rgb(229, 231, 235); color: ButtonText; display: flex; justify-content: center; align-items: center;">
-				····
-			</div>
-		</GridSplitter>
-		<GridElement Column="2" Row="0">
-			<Box FillColor="#FF00FF" BorderColor="#FF0000" BorderThickness="3" />
-		</GridElement>
-		<GridElement Column="2" Row="2">
-			<Box FillColor="#00FFFF" BorderColor="#FF0000" BorderThickness="3" />
-		</GridElement>
-	</ChildContent>
+    <GridColumnDefinitions>
+        <GridColumnDefinition Width="200" MinWidth="200" />
+        <GridColumnDefinition Width="10" />
+        <GridColumnDefinition Width="*" />
+    </GridColumnDefinitions>
+    <ChildContent>
+        <GridElement Column="0" Row="0" Margin="@(new Thickness(10))">
+            <Box FillColor="#00FF00" BorderColor="#FF0000" BorderThickness="3" />
+        </GridElement>
+        <GridSplitter Column="1" RowSpan="1" />
+        <GridElement Column="2" Row="0">
+            <Box FillColor="#FF00FF" BorderColor="#FF0000" BorderThickness="3" />
+        </GridElement>
+    </ChildContent>
 </Grid>
 
 @code {
+    bool _showThirdRow = false;
+    bool _showThirdColumn = false;
 
+    void GridResize(SplitterResizedGridEventArgs e)
+    {
+        foreach(var i in e.Rows)
+        {
+            Console.WriteLine(i.Height);
+        }
+
+        foreach (var i in e.Columns)
+        {
+            Console.WriteLine(i.Width);
+        }
+    }
 }

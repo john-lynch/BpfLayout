@@ -18,15 +18,18 @@
 </CascadingValue>
 
 @code {
-    List<GridRowDefinition> _rowsUnordered = new();
-    List<GridColumnDefinition> _columnsUnordered = new();
+
+    TrackDefinitions<GridRowDefinition> _rows = new();
+    TrackDefinitions<GridColumnDefinition> _columns = new();
     List<GridSplitter> _splitters = new();
     IJSObjectReference? _jsModule = default!;
+    DotNetObjectReference<Grid>? _jsGrid = default!;
+    bool _splittersDirty = false;
 
     // OrderBy is used because it is a stable sort so that columns without explicit sort
     // order will maintain their relative position.
-    IEnumerable<GridRowDefinition> Rows => _rowsUnordered.OrderBy(row => row.SortOrder ?? 0);
-    IEnumerable<GridColumnDefinition> Columns => _columnsUnordered.OrderBy(col => col.SortOrder ?? 0);
+    IEnumerable<GridRowDefinition> Rows => _rows.Ordered;
+    IEnumerable<GridColumnDefinition> Columns => _columns.Ordered;
 
     [Parameter]
     public string RootWidthCss
@@ -85,6 +88,13 @@
     } = 1.0;
 
     [Parameter]
+    public EventCallback<SplitterResizedGridEventArgs> SplitterResizedGrid
+    {
+        get;
+        set;
+    }
+
+    [Parameter]
     public RenderFragment? ChildContent
     {
         get;
@@ -95,32 +105,34 @@
 
     internal void AddRow(GridRowDefinition row)
     {
-        _rowsUnordered.Add(row);
+        _rows.Add(row);
     }
 
     internal void AddColumn(GridColumnDefinition column)
     {
-        _columnsUnordered.Add(column);
+        _columns.Add(column);
     }
 
     internal void RemoveRow(GridRowDefinition row)
     {
-        _rowsUnordered.Remove(row);
+        _rows.Remove(row);
     }
 
     internal void RemoveColumn(GridColumnDefinition column)
     {
-        _columnsUnordered.Remove(column);
+        _columns.Remove(column);
     }
 
     internal void AddSplitter(GridSplitter splitter)
     {
         _splitters.Add(splitter);
+        OnSplittersChanged();
     }
 
     internal void RemoveSplitter(GridSplitter splitter)
     {
         _splitters.Remove(splitter);
+        OnSplittersChanged();
     }
 
     internal bool IsRowSizedToContent(int startIndex, int span)
@@ -133,56 +145,13 @@
         return Columns.Skip(startIndex).Take(span).Any(r => string.Equals(r.Width.Trim(), "auto", StringComparison.OrdinalIgnoreCase));
     }
 
-    string GridTemplateRowsCss => GetGridTemplateCss(Rows, r => (Dimension: r.Height, Min: r.MinHeight, Max: r.MaxHeight), s => s.Row);
+    string GridTemplateRowsCss => _rows.GetGridTemplateCss(_splitters);
 
-    string GridTemplateColumnsCss => GetGridTemplateCss(Columns, c => (Dimension: c.Width, Min: c.MinWidth, Max: c.MaxWidth), s => s.Column);
+    string GridTemplateColumnsCss => _columns.GetGridTemplateCss(_splitters);
 
-    string GetGridTemplateCss<T>(
-        IEnumerable<T> templateElements,
-        Func<T, (string Dimension, double? Min, double? Max)> templateElementDimensionSelector,
-        Func<GridSplitter, int> splitterTrackSelector) =>
-        templateElements.Any()
-            ? string.Join(
-                ' ',
-                templateElements
-                    .Select(e => templateElementDimensionSelector(e))
-                    .Zip(Enumerable.Range(0, int.MaxValue), (e, i) => (e.Dimension, e.Min, e.Max, Index: i))
-                    .Select(e => GetGridTemplateElementCss(e.Dimension, e.Min, e.Max, _splitters.Any(s => splitterTrackSelector(s) is var i && (i == e.Index - 1 || i == e.Index + 1)))))
-            : "1fr";
-
-    string GetGridTemplateElementCss(string dimensionSpec, double? minDimension, double? maxDimension, bool nextToSplitter)
+    void OnSplittersChanged()
     {
-        var dim = GetGridTemplateElementCss(dimensionSpec);
-
-        // If this track is next to a splitter, we have to let the splitter code handle the min
-        // and max logic.
-        if (nextToSplitter || (minDimension is null && maxDimension is null))
-        {
-            return dim;
-        }
-
-        string? min = minDimension is not null ? $"{minDimension}px" : null;
-        string? max = maxDimension is not null ? $"{maxDimension}px" : null;
-
-        return $"minmax({min ?? dim}, {max ?? dim})";
-    }
-
-    string GetGridTemplateElementCss(string dimensionSpec)
-    {
-        var dim = dimensionSpec.Trim();
-        if (string.Equals(dim, "auto", StringComparison.OrdinalIgnoreCase))
-        {
-            return "max-content";
-        }
-
-        if (dim.EndsWith('*'))
-        {
-            var frsStr = dim.Substring(0, dim.Length - 1);
-            var frs = frsStr.Any() ? double.Parse(frsStr) : 1.0;
-            return $"{frs}fr";
-        }
-
-        return $"{double.Parse(dim)}px";
+        _splittersDirty = true;
     }
 
     record SplitterTrackDefinition(int Track, string CssSelector);
@@ -191,9 +160,12 @@
 
     protected override async Task OnAfterRenderAsync(bool firstRender)
     {
-        if (firstRender)
+        if (_splittersDirty)
         {
-            _jsModule = await JSRuntime.InvokeAsync<IJSObjectReference>("import", "./_content/BpfLayout/Grid.razor.js");
+            _splittersDirty = false;
+
+            _jsModule ??= await JSRuntime.InvokeAsync<IJSObjectReference>("import", "./_content/BpfLayout/Grid.razor.js");
+            _jsGrid ??= DotNetObjectReference.Create(this);
 
             var rowSplitters = _splitters
                 .Where(splitter => splitter.Row > 0)
@@ -207,33 +179,37 @@
 
             bool hasRowSplitters = rowSplitters.Length > 0;
             bool hasColumnSplitters = columnSplitters.Length > 0;
-            if (hasRowSplitters || hasColumnSplitters)
+            var rowMinConstraints = hasRowSplitters ? CreateConstraints(Rows, r => r.MinHeight) : [];
+            var rowMaxConstraints = hasRowSplitters ? CreateConstraints(Rows, r => r.MaxHeight) : [];
+            var columnMinConstraints = hasColumnSplitters ? CreateConstraints(Columns, c => c.MinWidth) : [];
+            var columnMaxConstraints = hasColumnSplitters ? CreateConstraints(Columns, c => c.MaxWidth) : [];
+
+            await _jsModule!.InvokeVoidAsync(
+                "updateSplitters",
+                _jsGrid,
+                rowSplitters,
+                columnSplitters,
+                rowMinConstraints,
+                rowMaxConstraints,
+                columnMinConstraints,
+                columnMaxConstraints,
+                RowSnapOffset,
+                ColumnSnapOffset,
+                RowDragInterval,
+                ColumnDragInterval);
+
+            // We don't know we have splitters until we render the grid interior, after we've generated
+            // the initial grid CSS. Split-Grid works with this initial grid template CSS, but if any of 
+            // our splitters are associated with rows that have constraints, we need to rerender so that
+            // we can remove the min/max logic from the grid template CSS and let the splitter logic
+            // take over the handling of those constraints.
+            //
+            // NOTE: we don't need to this rerender to re-run the splitter logic. We just need to regenerate
+            // the grid template CSS to remove min-max logic that trips the splitter code up.
+            if (rowMinConstraints.Length > 0 || rowMaxConstraints.Length > 0
+                || columnMinConstraints.Length > 0 || columnMaxConstraints.Length > 0)
             {
-                var rowMinConstraints = hasRowSplitters ? CreateConstraints(Rows, r => r.MinHeight) : [];
-                var rowMaxConstraints = hasRowSplitters ? CreateConstraints(Rows, r => r.MaxHeight) : [];
-                var columnMinConstraints = hasColumnSplitters ? CreateConstraints(Columns, c => c.MinWidth) : [];
-                var columnMaxConstraints = hasColumnSplitters ? CreateConstraints(Columns, c => c.MaxWidth) : [];
-
-                await _jsModule.InvokeVoidAsync(
-                    "initializeSplitters",
-                    rowSplitters,
-                    columnSplitters,
-                    rowMinConstraints,
-                    rowMaxConstraints,
-                    columnMinConstraints,
-                    columnMaxConstraints,
-                    RowSnapOffset,
-                    ColumnSnapOffset,
-                    RowDragInterval,
-                    ColumnDragInterval);
-
-                // If any of our splitters are associated with rows that have constraints, we need to rerender
-                // so that the splitter logic can take over the handling of those constraints.
-                if ((hasRowSplitters && (rowMinConstraints.Length > 0 || rowMaxConstraints.Length > 0))
-                    || (hasColumnSplitters && (columnMinConstraints.Length > 0 || columnMaxConstraints.Length > 0)))
-                {
-                    StateHasChanged();
-                }
+                StateHasChanged();
             }
         }
 
@@ -246,10 +222,33 @@
                     .ToArray();
     }
 
+    [JSInvokable]
+    public async Task OnSplitterResizedGridAsync(bool isRow, int trackIndex, string gridTemplate)
+    {
+        var overrides = gridTemplate.Split(' ', StringSplitOptions.TrimEntries | StringSplitOptions.RemoveEmptyEntries);
+        if (isRow)
+        {
+            _rows.SetOverrides(overrides);
+        }
+        else
+        {
+            _columns.SetOverrides(overrides);
+        }
+
+        if (SplitterResizedGrid is var splitterResizedGrid)
+        {
+            await splitterResizedGrid.InvokeAsync(new SplitterResizedGridEventArgs(
+                Rows: _rows.TracksWithSizeSpecs.Select(e => new RowSizeSpecification(e.Size, e.Track.Name)).ToArray(),
+                Columns: _columns.TracksWithSizeSpecs.Select(e => new ColumnSizeSpecification(e.Size, e.Track.Name)).ToArray()));
+        }
+    }
+
     public async ValueTask DisposeAsync()
     {
         try
         {
+            _jsGrid?.Dispose();
+
             if (_jsModule is not null)
             {
                 await _jsModule.DisposeAsync();
