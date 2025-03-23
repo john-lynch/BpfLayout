@@ -28,11 +28,6 @@
     bool _splittersDirty = false;
     string _jsId = $"grid{++_lastJsId}";
 
-    // OrderBy is used because it is a stable sort so that columns without explicit sort
-    // order will maintain their relative position.
-    IEnumerable<GridRowDefinition> Rows => _rows.Ordered;
-    IEnumerable<GridColumnDefinition> Columns => _columns.Ordered;
-
     [Parameter]
     public string RootWidthCss
     {
@@ -137,15 +132,17 @@
         OnSplittersChanged();
     }
 
-    internal bool IsRowSizedToContent(int startIndex, int span)
-    {
-        return Rows.Skip(startIndex).Take(span).Any(r => string.Equals(r.Height.Trim(), "auto", StringComparison.OrdinalIgnoreCase));
-    }
+    internal bool IsRowSizedToContent(string? rowId, int span) =>
+        _rows.IsTrackSizedToContent(rowId, span);
 
-    internal bool IsColumnSizedToContent(int startIndex, int span)
-    {
-        return Columns.Skip(startIndex).Take(span).Any(r => string.Equals(r.Width.Trim(), "auto", StringComparison.OrdinalIgnoreCase));
-    }
+    internal bool IsColumnSizedToContent(string? columnId, int span) =>
+        _columns.IsTrackSizedToContent(columnId, span);
+
+    internal int GetGridRowIndex(string? rowId) =>
+        _rows.GetTrackIndex(rowId);
+
+    internal int GetGridColumnIndex(string? columnId) =>
+        _columns.GetTrackIndex(columnId);
 
     string GridTemplateRowsCss => _rows.GetGridTemplateCss(_splitters);
 
@@ -170,21 +167,21 @@
             _jsGrid ??= DotNetObjectReference.Create(this);
 
             var rowSplitters = _splitters
-                .Where(splitter => splitter.Row > 0)
-                .Select(splitter => new SplitterTrackDefinition(splitter.Row, $".{splitter.UniqueClassCssForClipContainer}"))
+                .Where(splitter => splitter.Row is not null)
+                .Select(splitter => new SplitterTrackDefinition(_rows.GetTrackIndex(splitter.Row), $".{splitter.UniqueClassCssForClipContainer}"))
                 .ToArray();
 
             var columnSplitters = _splitters
-                .Where(splitter => splitter.Column > 0)
-                .Select(splitter => new SplitterTrackDefinition(splitter.Column, $".{splitter.UniqueClassCssForClipContainer}"))
+                .Where(splitter => splitter.Column is not null)
+                .Select(splitter => new SplitterTrackDefinition(_columns.GetTrackIndex(splitter.Column), $".{splitter.UniqueClassCssForClipContainer}"))
                 .ToArray();
 
             bool hasRowSplitters = rowSplitters.Length > 0;
             bool hasColumnSplitters = columnSplitters.Length > 0;
-            var rowMinConstraints = hasRowSplitters ? CreateConstraints(Rows, r => r.MinHeight) : [];
-            var rowMaxConstraints = hasRowSplitters ? CreateConstraints(Rows, r => r.MaxHeight) : [];
-            var columnMinConstraints = hasColumnSplitters ? CreateConstraints(Columns, c => c.MinWidth) : [];
-            var columnMaxConstraints = hasColumnSplitters ? CreateConstraints(Columns, c => c.MaxWidth) : [];
+            var rowMinConstraints = hasRowSplitters ? CreateConstraints(_rows.Ordered, r => r.MinHeight) : [];
+            var rowMaxConstraints = hasRowSplitters ? CreateConstraints(_rows.Ordered, r => r.MaxHeight) : [];
+            var columnMinConstraints = hasColumnSplitters ? CreateConstraints(_columns.Ordered, c => c.MinWidth) : [];
+            var columnMaxConstraints = hasColumnSplitters ? CreateConstraints(_columns.Ordered, c => c.MaxWidth) : [];
 
             await _jsModule!.InvokeVoidAsync(
                 "updateSplitters",

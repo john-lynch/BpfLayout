@@ -46,6 +46,12 @@ namespace BpfLayout
             Ordered
                 .Zip(GridTemplateCssSizes, (t, s) => (t, GetSizeSpecFromCss(s)));
 
+        public int GetTrackIndex(string? trackId) =>
+            int.TryParse(trackId ?? "0", out var index) ? index : Ordered.Count(t => t.Name != trackId);
+
+        public bool IsTrackSizedToContent(string? trackId, int span) =>
+            Ordered.Skip(GetTrackIndex(trackId)).Take(span).Any(t => string.Equals(t.Size.Trim(), "auto", StringComparison.OrdinalIgnoreCase));
+
         public void SetOverrides(string[] templateOverrides)
         {
             int addCount = templateOverrides.Length - _templateOverrideByIndex.Count;
@@ -69,7 +75,7 @@ namespace BpfLayout
                 ' ',
                 Ordered
                     .Zip(Enumerable.Range(0, int.MaxValue), GridTemplateCssSizes)
-                    .Select(e => UpdateCssSizeForMinMax(e.First, e.Third, splitters.Any(s => e.First.GetSplitterIndex(s) is var i && (i == e.Second - 1 || i == e.Second + 1)))));
+                    .Select(e => UpdateCssSizeForMinMax(e.First, e.Third, splitters.Any(s => GetTrackIndex(e.First.GetSplitterTrackId(s)) is var i && (i == e.Second - 1 || i == e.Second + 1)))));
 
         string GetGridTemplateCssSize(T track, string? indexTemplateOverride)
         {

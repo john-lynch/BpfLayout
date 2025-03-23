@@ -30,7 +30,7 @@
 
 	internal override double? MaxSize => MaxHeight;
 
-	internal override int GetSplitterIndex(GridSplitter splitter) => splitter.Row;
+	internal override string? GetSplitterTrackId(GridSplitter splitter) => splitter.Row;
 
 	protected override void OnInitialized()
 	{

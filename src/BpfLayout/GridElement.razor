@@ -56,18 +56,18 @@
 @code {
 
 	[Parameter]
-	public int Row
+	public string? Row
 	{
 		get;
 		set;
-	} = 0;
+	} = default;
 
 	[Parameter]
-	public int Column
+	public string? Column
 	{
 		get;
 		set;
-	} = 0;
+	} = default;
 
 	[Parameter]
 	public int RowSpan
@@ -87,11 +87,11 @@
 
 	protected override bool VerticalStretchForImplicitHeight => VerticalAlignment == VerticalAlignment.Stretch && !Parent.IsRowSizedToContent(Row, RowSpan);
 
-	int GridRowStartCss => Row + 1;
+	int GridRowStartCss => Parent.GetGridRowIndex(Row) + 1;
 
 	int GridRowSpanCss => RowSpan;
 
-	int GridColumnStartCss => Column + 1;
+	int GridColumnStartCss => Parent.GetGridColumnIndex(Column) + 1;
 
 	int GridColumnSpanCss => ColumnSpan;
 }

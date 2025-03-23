@@ -12,7 +12,7 @@
 }
 
 @code {
-	string CursorMode => Row > 0 ? "row-resize" : "col-resize";
+	string CursorMode => Row is not null ? "row-resize" : "col-resize";
 
 	protected override void OnInitialized()
 	{

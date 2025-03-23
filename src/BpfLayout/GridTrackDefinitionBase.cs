@@ -31,6 +31,6 @@ namespace BpfLayout
 
         internal abstract double? MaxSize { get; }
 
-        internal abstract int GetSplitterIndex(GridSplitter splitter);
+        internal abstract string? GetSplitterTrackId(GridSplitter splitter);
     }
 }
