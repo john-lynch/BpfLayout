@@ -1,4 +1,4 @@
-import './split-grid.js'
+import './split-grid.min.js'
 
 function createConstraintObject(constraints) {
     let cs = {}
