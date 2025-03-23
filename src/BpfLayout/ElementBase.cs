@@ -1,13 +1,8 @@
 ﻿using Microsoft.AspNetCore.Components;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace BpfLayout
 {
-	public abstract class ElementBase<T> : ComponentBase
+    public abstract class ElementBase<T> : ComponentBase
     {
         Guid _uid = Guid.NewGuid();
 
