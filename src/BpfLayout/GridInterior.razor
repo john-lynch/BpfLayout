@@ -9,19 +9,3 @@
 <div style="@Parent.StyleCss">
     @ChildContent
 </div>
-
-@code {
-    [CascadingParameter]
-    public Grid Parent
-    {
-        get;
-        set;
-    } = default!;
-
-    [Parameter]
-    public RenderFragment? ChildContent
-    {
-        get;
-        set;
-    }
-}

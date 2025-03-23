@@ -4,9 +4,9 @@ namespace BpfLayout
 {
     internal class TrackDefinitions<T> where T : GridTrackDefinitionBase
     {
-        List<T> _unordered = new();
-        Dictionary<string, string> _templateOverrideByName = new();
-        List<string?> _templateOverrideByIndex = new();
+        readonly List<T> _unordered = [];
+        readonly Dictionary<string, string> _templateOverrideByName = [];
+        readonly List<string?> _templateOverrideByIndex = [];
 
         IEnumerable<string?> TrackGridTemplateByIndex => _templateOverrideByIndex.Concat(Enumerable.Repeat(default(string?), int.MaxValue));
 
@@ -87,7 +87,7 @@ namespace BpfLayout
             return templateOverride ?? GetGridTemplateElementCss(track.Size);
         }
 
-        string UpdateCssSizeForMinMax(T track, string size, bool nextToSplitter)
+        static string UpdateCssSizeForMinMax(T track, string size, bool nextToSplitter)
         {
             // If this track is next to a splitter, we have to let the splitter code handle the min
             // and max logic.
@@ -113,7 +113,7 @@ namespace BpfLayout
             if (size.EndsWith('*'))
             {
                 var frsStr = size[0..^1];
-                var frs = frsStr.Any() ? double.Parse(frsStr) : 1.0;
+                var frs = frsStr.Length > 0 ? double.Parse(frsStr) : 1.0;
                 return $"{frs}fr";
             }
 

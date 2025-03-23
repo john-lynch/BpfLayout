@@ -1,47 +1,32 @@
 ﻿@inherits ElementBase<ScrollViewer>
 
 <style>
-	.@UniqueClassCssForMarginContainer {
-		grid-row: 1;
-		grid-column: 1;
-		overflow: clip;
-		box-sizing: border-box;
-		padding: @MarginCss;
-		width: @ContainerWidthCss;
-		height: @ContainerHeightCss;
-		min-width: @MinWidthCss;
-		min-height: @MinHeightCss;
-		justify-self: @HorizontalAlignmentCss;
-		align-self: @VerticalAlignmentCss;
-		display: grid;
-		grid-template-rows: 100%;
-		grid-template-columns: 100%;
-	}
+    .@UniqueClassCssForMarginContainer {
+        grid-row: 1;
+        grid-column: 1;
+        overflow: clip;
+        box-sizing: border-box;
+        padding: @MarginCss;
+        width: @ContainerWidthCss;
+        height: @ContainerHeightCss;
+        min-width: @MinWidthCss;
+        min-height: @MinHeightCss;
+        justify-self: @HorizontalAlignmentCss;
+        align-self: @VerticalAlignmentCss;
+        display: grid;
+        grid-template-rows: 100%;
+        grid-template-columns: 100%;
+    }
 
-	.@UniqueClassCssForMarginContainer > * {
-		grid-row: 1;
-		grid-column: 1;
-		width: @ElementWidthCss;
-		height: @ElementHeightCss;
-		min-width: @MinWidthCss !important;
-		min-height: @MinHeightCss !important;
-	}
+    .@UniqueClassCssForMarginContainer > * {
+        grid-row: 1;
+        grid-column: 1;
+        width: @ElementWidthCss;
+        height: @ElementHeightCss;
+        min-width: @MinWidthCss !important;
+        min-height: @MinHeightCss !important;
+    }
 </style>
 <div class="@UniqueClassCssForMarginContainer">
-	@ChildContent
+    @ChildContent
 </div>
-
-@code {
-
-	protected override bool HorizontalStretchForImplicitWidth => HorizontalAlignment == HorizontalAlignment.Stretch && Parent.HorizontalScrollBarVisibility == ScrollBarVisibility.Disabled;
-
-	protected override bool VerticalStretchForImplicitHeight => VerticalAlignment == VerticalAlignment.Stretch && Parent.VerticalScrollBarVisibility == ScrollBarVisibility.Disabled;
-
-	protected override string HorizontalAlignmentCss => Parent.HorizontalScrollBarVisibility == ScrollBarVisibility.Disabled ? base.HorizontalAlignmentCss : "start";
-
-	protected override string VerticalAlignmentCss => Parent.VerticalScrollBarVisibility == ScrollBarVisibility.Disabled ? base.VerticalAlignmentCss : "start";
-
-	string MinWidthCss => HorizontalStretch ? "100%" : "0px";
-
-	string MinHeightCss => VerticalStretch ? "100%" : "0px";
-}

@@ -32,7 +32,7 @@ export function updateSplitters(id, grid, rowSplitters, columnSplitters, rowMinC
         rowDragInterval: rowDragInterval,
         columnDragInterval: columnDragInterval,
         onDrag: (direction, track, gridTemplate) => lastDragTemplate = gridTemplate,
-        onDragEnd: (direction, track) => grid.invokeMethodAsync("OnSplitterResizedGridAsync", direction == 'row', track, lastDragTemplate)
+        onDragEnd: (direction, track) => grid.invokeMethodAsync("OnSplitterResizedGridAsync", direction == 'row', lastDragTemplate)
     })
 }
 

@@ -4,7 +4,7 @@ namespace BpfLayout
 {
     public abstract class ElementBase<T> : ComponentBase
     {
-        Guid _uid = Guid.NewGuid();
+        readonly Guid _uid = Guid.NewGuid();
 
         internal string UniqueClassCssForClipContainer => $"bpf-layout-clip-{_uid}";
 

@@ -1,97 +1,54 @@
 ﻿@inherits ElementBase<Grid>
 
 <style>
-	/*
-		Here's how this works: we need each grid element to have a containing div that
-		clips contents to the boundary of its grid cell. To accomplish this, we have the
-		containing div size itself to 100%, which should cause it to take its width and
-		height right from the grid template specification. It then uses grid display
-		itself, with one row and one column that take up the entirity of the containing
-		div, so that it can align its child element correctly.
-	*/
-	.@UniqueClassCssForClipContainer {
-		grid-row: @GridRowStartCss / span @GridRowSpanCss;
-		grid-column: @GridColumnStartCss / span @GridColumnSpanCss;
-		overflow: clip;
-		box-sizing: border-box;
-		width: 100%;
-		height: 100%;
-		min-width: 0;
-		min-height: 0;
-		display: grid;
-		grid-template-rows: 100%;
-		grid-template-columns: 100%;
-	}
+    @*
+        Here's how this works: we need each grid element to have a containing div that
+        clips contents to the boundary of its grid cell. To accomplish this, we have the
+        containing div size itself to 100%, which should cause it to take its width and
+        height right from the grid template specification. It then uses grid display
+        itself, with one row and one column that take up the entirity of the containing
+        div, so that it can align its child element correctly.
+    *@
+    .@UniqueClassCssForClipContainer {
+        grid-row: @GridRowStartCss / span @GridRowSpanCss;
+        grid-column: @GridColumnStartCss / span @GridColumnSpanCss;
+        overflow: clip;
+        box-sizing: border-box;
+        width: 100%;
+        height: 100%;
+        min-width: 0;
+        min-height: 0;
+        display: grid;
+        grid-template-rows: 100%;
+        grid-template-columns: 100%;
+    }
 
-	.@UniqueClassCssForMarginContainer {
-		grid-row: 1;
-		grid-column: 1;
-		overflow: clip;
-		box-sizing: border-box;
-		width: @ContainerWidthCss;
-		height: @ContainerHeightCss;
-		padding: @MarginCss;
-		justify-self: @HorizontalAlignmentCss;
-		align-self: @VerticalAlignmentCss;
-		display: grid;
-		grid-template-rows: 100%;
-		grid-template-columns: 100%;
-	}
+    .@UniqueClassCssForMarginContainer {
+        grid-row: 1;
+        grid-column: 1;
+        overflow: clip;
+        box-sizing: border-box;
+        width: @ContainerWidthCss;
+        height: @ContainerHeightCss;
+        padding: @MarginCss;
+        justify-self: @HorizontalAlignmentCss;
+        align-self: @VerticalAlignmentCss;
+        display: grid;
+        grid-template-rows: 100%;
+        grid-template-columns: 100%;
+    }
 
-	.@UniqueClassCssForMarginContainer > * {
-		grid-row: 1;
-		grid-column: 1;
-		overflow: clip;
-		box-sizing: border-box;
-		width: @ElementWidthCss !important;
-		height: @ElementHeightCss !important;
-	}
+    .@UniqueClassCssForMarginContainer > * {
+        grid-row: 1;
+        grid-column: 1;
+        overflow: clip;
+        box-sizing: border-box;
+        width: @ElementWidthCss !important;
+        height: @ElementHeightCss !important;
+    }
 </style>
 <div class="@UniqueClassCssForClipContainer">
-	<div class="@UniqueClassCssForMarginContainer">
-		@ChildContent
-	</div>
+    <div class="@UniqueClassCssForMarginContainer">
+        @ChildContent
+    </div>
 </div>
-
-@code {
-
-	[Parameter]
-	public string? Row
-	{
-		get;
-		set;
-	} = default;
-
-	[Parameter]
-	public string? Column
-	{
-		get;
-		set;
-	} = default;
-
-	[Parameter]
-	public int RowSpan
-	{
-		get;
-		set;
-	} = 1;
-
-	[Parameter]
-	public int ColumnSpan
-	{
-		get;
-		set;
-	} = 1;
-
-	protected override bool HorizontalStretchForImplicitWidth => HorizontalAlignment == HorizontalAlignment.Stretch && !Parent.IsColumnSizedToContent(Column, ColumnSpan);
-
-	protected override bool VerticalStretchForImplicitHeight => VerticalAlignment == VerticalAlignment.Stretch && !Parent.IsRowSizedToContent(Row, RowSpan);
-
-	int GridRowStartCss => Parent.GetGridRowIndex(Row) + 1;
-
-	int GridRowSpanCss => RowSpan;
-
-	int GridColumnStartCss => Parent.GetGridColumnIndex(Column) + 1;
-
-	int GridColumnSpanCss => ColumnSpan;
-}

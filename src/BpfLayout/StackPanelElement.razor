@@ -1,39 +1,28 @@
 ﻿@inherits ElementBase<StackPanel>
 
-<style>	
-	.@UniqueClassCssForMarginContainer {
-		flex: none;
-		overflow: clip;
-		box-sizing: border-box;
-		width: @ContainerWidthCss;
-		height: @ContainerHeightCss;
-		padding: @MarginCss;
-		align-self: @AlignmentCss;
-		display: grid;
-		grid-template-rows: 100%;
-		grid-template-columns: 100%;
-	}
+<style>
+    .@UniqueClassCssForMarginContainer {
+        flex: none;
+        overflow: clip;
+        box-sizing: border-box;
+        width: @ContainerWidthCss;
+        height: @ContainerHeightCss;
+        padding: @MarginCss;
+        align-self: @AlignmentCss;
+        display: grid;
+        grid-template-rows: 100%;
+        grid-template-columns: 100%;
+    }
 
-	.@UniqueClassCssForMarginContainer > * {
-		grid-row: 1;
-		grid-column: 1;
-		overflow: clip;
-		box-sizing: border-box;
-		width: @ElementWidthCss !important;
-		height: @ElementHeightCss !important;
-	}
+    .@UniqueClassCssForMarginContainer > * {
+        grid-row: 1;
+        grid-column: 1;
+        overflow: clip;
+        box-sizing: border-box;
+        width: @ElementWidthCss !important;
+        height: @ElementHeightCss !important;
+    }
 </style>
 <div class="@UniqueClassCssForMarginContainer">
-	@ChildContent
+    @ChildContent
 </div>
-
-@code {
-
-	protected override bool HorizontalStretchForImplicitWidth => HorizontalAlignment == HorizontalAlignment.Stretch && Parent.Orientation != Orientation.Horizontal;
-
-	protected override bool VerticalStretchForImplicitHeight => VerticalAlignment == VerticalAlignment.Stretch && Parent.Orientation != Orientation.Vertical;
-
-	string AlignmentCss => Parent.Orientation == Orientation.Horizontal
-		? VerticalAlignmentCss
-		: HorizontalAlignmentCss;
-}
