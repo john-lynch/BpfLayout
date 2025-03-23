@@ -12,7 +12,21 @@
 }
 
 @code {
-	string CursorMode => Row is not null ? "row-resize" : "col-resize";
+	static string GetDefaultGripStyle(string imageName) => $"background-color: rgb(229, 231, 235); background-repeat: no-repeat; background-position: 50%; background-image: url(./_content/BpfLayout/{imageName}.png);";
+
+	static RenderFragment DefaultVerticalGrip =@<div style="@GetDefaultGripStyle("vertical")"></div>;
+
+	static RenderFragment DefaultHorizontalGrip =@<div style="@GetDefaultGripStyle("horizontal")"></div>;
+
+	bool IsHorizontal => Row is not null;
+
+	string CursorMode => IsHorizontal ? "row-resize" : "col-resize";
+
+	public override async Task SetParametersAsync(ParameterView parameters)
+	{		
+		await base.SetParametersAsync(parameters);
+		ChildContent ??= IsHorizontal ? DefaultHorizontalGrip : DefaultVerticalGrip;
+	}
 
 	protected override void OnInitialized()
 	{
