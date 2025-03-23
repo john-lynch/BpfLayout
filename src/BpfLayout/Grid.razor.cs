@@ -13,7 +13,7 @@ namespace BpfLayout
         IJSObjectReference? _jsModule = default!;
         DotNetObjectReference<Grid>? _jsGrid = default!;
         bool _splittersDirty = false;
-        readonly string _jsId = $"grid{++_lastJsId}";
+        readonly int _jsId = ++_lastJsId;
 
         [Parameter]
         public string RootWidthCss
