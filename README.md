@@ -74,3 +74,21 @@ Here we a `Grid` with three rows and four columns, demonstrating the various siz
 * Child elements of the `Grid` are not placed directly under the `Grid` itself. Instead, they are placed under the `ChildContent` `RenderFragment` property. Again, this is simply how Blazor works.
 * Elements are not placed directly under `ChildContent`. Instead, all child elements are wrapped in an element component. For a `Grid`, this is `GridElement`. These element components supply the equivalent `FrameworkElement` properties from WPF and attempt to transform their child elements to honor these properties. Subsequent BpfLayout components can be nested inside these element components. In this example, the `div` tags take all their sizing and alignment information from the element component in which they are nested.
 * The `Row` and `Column` properites aren't attached properties as in WPF, but are rather properties of the `GridElement` class. 
+
+## Reference
+
+### Grid
+
+#### Parameters
+* `string RootWidthCss` (default: `"100%"`): The width of the grid element itself in CSS units. Once rooted, nested BpfLayout elements take their widths from `GridElement` components, and this parameters is not necessary.
+* `string RootHeightCss` (default: `"100%"`): The height of the grid element itself in CSS units. Once rooted, nested BpfLayout elements take their heights from `GridElement` components, and this parameters is not necessary.
+* `double RowSnapOffset` (default: `0.0`): When using a `GridSplitter`, indicates the number of pixels from a neighboring row at which a row splitter will "snap" shut.
+* `double ColumnSnapOffset` (default: `0.0`): When using a `GridSplitter`, indicates the number of pixels from a neighboring column at which a column splitter will "snap" shut.
+* `double RowDragInterval` (default: `1.0`): When using a `GridSplitter`, indicates the granularity in pixels of row splitter movement. Values over 1.0 will result in "chunkier" movement.
+* `double ColumnDragInterval` (default: `1.0`): When using a `GridSplitter`, indicates the granularity in pixels of column splitter movement. Values over 1.0 will result in "chunkier" movement.
+* `EventCallback<SplitterResizedGridEventArgs> SplitterResizedGrid`: Callback issue whenever a splitter resizes the grid, providing the new row and column definitions for the current grid. Clients can use this to save grid layout across sessions.
+* `RenderFragment? GridRowDefinitions`: Home for child `GridRowDefinition` components.
+* `RenderFragment? GridColumnDefinitions`: Home for child `GridColumnDefinition` components.
+* `ChildContent`: Home for child `GridElement` and `GridSplitter` components.
+
+
