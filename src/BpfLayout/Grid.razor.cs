@@ -5,7 +5,7 @@ namespace BpfLayout
 {
     public partial class Grid
     {
-        static int _lastJsId = 0;
+        static int s_lastJsId = 0;
 
         readonly TrackDefinitions<GridRowDefinition> _rows = new();
         readonly TrackDefinitions<GridColumnDefinition> _columns = new();
@@ -13,7 +13,7 @@ namespace BpfLayout
         IJSObjectReference? _jsModule = default!;
         DotNetObjectReference<Grid>? _jsGrid = default!;
         bool _splittersDirty = false;
-        readonly int _jsId = ++_lastJsId;
+        readonly int _jsId = Interlocked.Increment(ref s_lastJsId);
 
         [Parameter]
         public string RootWidthCss
