@@ -170,7 +170,7 @@ Grid row and column sizes are specified using the same format as WPF row and col
 
 ### GridRowDefinition
 
-Defines a row in a `Grod` as a child element of the `GridRowDefinitions` parameter.
+Defines a row in a `Grid` as a child element of the `GridRowDefinitions` parameter.
 
 #### Example
 
@@ -185,7 +185,7 @@ See the `Grid` example ([source](tests/BpfLayoutCoreTests/Pages/GridExample.razo
 * 
 ### GridColumnDefinition
 
-Defines a column in a `Grod` as a child element of the `GridColumnDefinitions` parameter.
+Defines a column in a `Grid` as a child element of the `GridColumnDefinitions` parameter.
 
 #### Example
 
