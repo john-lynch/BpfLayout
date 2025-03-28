@@ -1,0 +1,48 @@
+﻿@page "/scroll-viewer-example"
+
+<Grid RootWidthCss="600px" RootHeightCss="100%">
+    <GridRowDefinitions>
+        <GridRowDefinition Height="100" />
+        <GridRowDefinition Height="*" />
+    </GridRowDefinitions>
+    <ChildContent>
+        <GridElement Row="0" HorizontalAlignment="@HorizontalAlignment.Center">
+            Example of a scrollable area
+        </GridElement>
+        <GridElement Row="1">
+            <ScrollViewer>
+                <ScrollViewerElement>
+                    <StackPanel Orientation="@Orientation.Vertical">
+                        <StackPanelElement Margin="@(new Thickness(50))">
+                            <div>ABC</div>
+                        </StackPanelElement>
+                        <StackPanelElement Margin="@(new Thickness(50))">
+                            <div>DEF</div>
+                        </StackPanelElement>
+                        <StackPanelElement Margin="@(new Thickness(50))">
+                            <div>GHI</div>
+                        </StackPanelElement>
+                        <StackPanelElement Margin="@(new Thickness(50))">
+                            <div>JKL</div>
+                        </StackPanelElement>
+                        <StackPanelElement Margin="@(new Thickness(50))">
+                            <div>MNO</div>
+                        </StackPanelElement>
+                        <StackPanelElement Margin="@(new Thickness(50))">
+                            <div>PQR</div>
+                        </StackPanelElement>
+                        <StackPanelElement Margin="@(new Thickness(50))">
+                            <div>STU</div>
+                        </StackPanelElement>
+                        <StackPanelElement Margin="@(new Thickness(50))">
+                            <div>VWX</div>
+                        </StackPanelElement>
+                        <StackPanelElement Margin="@(new Thickness(50))">
+                            <div>YZ!</div>
+                        </StackPanelElement>
+                    </StackPanel>
+                </ScrollViewerElement>
+            </ScrollViewer>
+        </GridElement>
+    </ChildContent>
+</Grid>

@@ -1,0 +1,40 @@
+﻿@page "/grid-splitter-example"
+
+@*
+    Note that the snap and drag interval properties apply to the whole grid. This is a limitation
+    of the splitter library being used.
+*@
+<Grid RootWidthCss="600px" RootHeightCss="600px" RowSnapOffset="50" ColumnDragInterval="10">
+    @*
+        All row/column definitions use pixel or * sizes. The splitter library being used cannot resize auto 
+        sized rows or columns. However, you may use an auto size if it is not adjacent to a splitter.
+    *@
+    <GridRowDefinitions>
+        <GridRowDefinition Height="100" />
+        <GridRowDefinition Height="4" />
+        <GridRowDefinition Height="*" />
+    </GridRowDefinitions>
+    <GridColumnDefinitions>
+        <GridColumnDefinition Width="*" />
+        <GridColumnDefinition Width="4" />
+        <GridColumnDefinition Width="*" />
+    </GridColumnDefinitions>
+    <ChildContent>
+        <GridElement Row="0" Column="0" HorizontalAlignment="@HorizontalAlignment.Center" VerticalAlignment="@VerticalAlignment.Center">
+            <div>Top Left</div>
+        </GridElement>
+        <GridElement Row="2" Column="0" HorizontalAlignment="@HorizontalAlignment.Center" VerticalAlignment="@VerticalAlignment.Center">
+            <div>Bottom Left</div>
+        </GridElement>
+        <GridElement Row="0" Column="2" HorizontalAlignment="@HorizontalAlignment.Center" VerticalAlignment="@VerticalAlignment.Center">
+            <div>Top Right</div>
+        </GridElement>
+        <GridElement Row="2" Column="2" HorizontalAlignment="@HorizontalAlignment.Center" VerticalAlignment="@VerticalAlignment.Center">
+            <div>Bottom Left</div>
+        </GridElement>
+        @* By setting a Row, this becomes a Row splitter; note that we must specify ColumnSpan to get it to stretch across the whole grid *@
+        <GridSplitter Row="1" ColumnSpan="3" />
+        @* By setting a Column, this becomes a Column splitter; note that we must specify RowSpan to get it to stretch across the whole grid *@
+        <GridSplitter Column="1" RowSpan="3" />
+    </ChildContent>
+</Grid>

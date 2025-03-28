@@ -1,0 +1,37 @@
+﻿@page "/grid-example"
+
+@*
+    Because this grid is the root element on the page, we must specify its dimensions in CSS terms.
+    Here we choose 100% (the default) for height and 600px for width. How that 100% will be interpreted
+    is up to the HTML/CSS layout that this grid finds itself in.
+*@
+<Grid RootWidthCss="600px" RootHeightCss="100%">
+    <GridRowDefinitions>
+        <GridRowDefinition Height="auto" />
+        <GridRowDefinition Height="*" />
+    </GridRowDefinitions>
+    <GridColumnDefinitions>
+        <GridColumnDefinition Width="200" />
+        <GridColumnDefinition Width="*" />
+    </GridColumnDefinitions>
+    <ChildContent>
+        <GridElement Row="0" Column="0">
+            <div>Top Left Corner</div>
+        </GridElement>
+        <GridElement Row="1" Column="0" VerticalAlignment="@VerticalAlignment.Bottom">
+            <div>Side Bar</div>
+        </GridElement>
+        <GridElement Row="0" Column="1" HorizontalAlignment="@HorizontalAlignment.Center">
+            <div>Top Bar with auto height</div>
+        </GridElement>
+        <GridElement Row="1" Column="1">
+            <Grid>
+                @*
+                    This grid does not need RootWidthCss or RootHeightCss because it is placed inside another grid 
+                    and so it will take its width and height from the grid element encloding it. If RootWidthCss or
+                    RootHeightCss were specified here, the GridElement would override them by design.
+                *@
+            </Grid>
+        </GridElement>
+    </ChildContent>
+</Grid>

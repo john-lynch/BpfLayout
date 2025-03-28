@@ -1,0 +1,57 @@
+﻿@page "/"
+
+<Grid RootWidthCss="800px" RootHeightCss="600px">
+    <GridRowDefinitions>
+        <GridRowDefinition Height="100" />
+        <GridRowDefinition Height="*" />
+    </GridRowDefinitions>
+    <GridColumnDefinitions>
+        <GridColumnDefinition Width="auto" />
+        <GridColumnDefinition Width="*" />
+    </GridColumnDefinitions>
+    <ChildContent>
+        <GridElement Row="0" Column="0" HorizontalAlignment="HorizontalAlignment.Center" VerticalAlignment="VerticalAlignment.Center">
+            <div>
+                BpfLayout
+            </div>
+        </GridElement>
+        <GridElement Row="0" Column="1" HorizontalAlignment="HorizontalAlignment.Center" VerticalAlignment="VerticalAlignment.Center">
+            <div>
+                Some nonsense text to show layout examples
+            </div>
+        </GridElement>
+        <GridElement Row="1" Column="0">
+            <StackPanel Orientation="Orientation.Vertical">
+                <StackPanelElement HorizontalAlignment="HorizontalAlignment.Left" Margin="@(new Thickness(4.0, 10.0))">
+                    <a href="https://github.com/john-lynch/BpfLayout">BpfLayout on Github</a>
+                </StackPanelElement>
+                <StackPanelElement HorizontalAlignment="HorizontalAlignment.Left" Margin="@(new Thickness(4.0, 10.0))">
+                    <a href="https://www.nuget.org/packages/BpfLayout">BpfLayout on Nuget</a>
+                </StackPanelElement>
+            </StackPanel>
+        </GridElement>
+        <GridElement Row="1" Column="1">
+            <ScrollViewer>
+                <ScrollViewerElement>
+                    <div>
+                        <p>
+                            Lorem ipsum dolor sit amet, consectetur adipiscing elit. Suspendisse vestibulum vel eros tincidunt consectetur. Nullam dignissim pretium interdum. Sed eu molestie tellus. Sed maximus nunc in dolor pulvinar laoreet. Maecenas ac feugiat libero. Donec laoreet, enim id luctus venenatis, eros orci maximus neque, ac mollis purus diam id nisl. Vivamus tortor urna, tincidunt vel ultrices sit amet, egestas sit amet lectus. Integer cursus, purus et consequat mollis, lorem ipsum tempus sem, tempus ornare libero turpis a lectus. Vivamus tincidunt ante neque, fringilla ornare eros fermentum id. Nunc consequat, neque at tempor eleifend, dui neque feugiat arcu, id lobortis orci arcu ut quam. Maecenas vulputate vulputate justo, at porttitor diam congue vitae. Sed ac nisi a metus congue malesuada vel non libero.
+                        </p>
+                        <p>
+                            Nullam dignissim eros id tempor ornare. Suspendisse augue urna, sollicitudin sed nisi nec, sagittis laoreet mauris. Pellentesque feugiat sapien lacus. Vestibulum id diam ac neque porta ullamcorper. Sed blandit sem ac aliquet auctor. Quisque non volutpat risus, vitae tempor arcu. Vivamus ac volutpat sem. Nunc massa massa, convallis ac dolor nec, feugiat porttitor sem. Donec sollicitudin vulputate augue, at dictum ipsum pharetra ut. Maecenas sagittis, lorem ut commodo tristique, ipsum arcu lobortis quam, sed ultricies metus enim at nisi. Cras pharetra tortor eu maximus luctus. Etiam placerat posuere ipsum, ac fringilla magna gravida fringilla. Sed in vehicula mauris. In viverra sem purus, ut sodales orci iaculis quis.
+                        </p>
+                        <p>
+                            Phasellus vel auctor justo. Fusce nisi neque, faucibus sit amet porttitor in, varius eget erat. Proin varius dui vel mi venenatis dictum. Nullam eu orci nec nunc tincidunt rhoncus cursus nec tellus. Aliquam erat volutpat. Aliquam aliquam neque at lectus imperdiet vulputate. Phasellus ac porta erat. Nulla facilisi. Class aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos himenaeos. Morbi non felis sed urna placerat condimentum sed et ligula.
+                        </p>
+                        <p>
+                            Donec ipsum nunc, placerat dictum egestas ultrices, ornare sit amet elit. Suspendisse egestas massa nulla, eget porta turpis aliquet ut. Cras convallis dolor purus, non placerat tellus pretium vel. Donec interdum malesuada dui id bibendum. Morbi imperdiet consectetur lorem, eget pulvinar eros fringilla eu. Nullam finibus, dui eget elementum varius, nulla lectus malesuada est, ac iaculis urna nibh ut leo. Duis leo purus, elementum nec tortor efficitur, commodo sollicitudin tellus. Pellentesque vel cursus neque, ut sagittis nibh. Mauris finibus lacus urna, eu efficitur neque malesuada vitae.
+                        </p>
+                        <p>
+                            Morbi ut volutpat velit, tincidunt ultrices massa. Duis maximus tempor nisi at tristique. Fusce malesuada velit porta placerat imperdiet. Quisque tempor dui libero. Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas. Quisque fermentum, leo a gravida vestibulum, nunc diam aliquam lacus, efficitur pulvinar magna orci non tortor. Donec libero sem, pellentesque eget finibus ac, feugiat ut nulla. Mauris sed interdum lectus. Interdum et malesuada fames ac ante ipsum primis in faucibus. Quisque nec purus elit. Curabitur euismod augue mollis cursus ultricies. Aliquam erat volutpat. Sed enim eros, laoreet sed sem id, vestibulum commodo nunc. Ut quis sem sem. Nullam ultricies ante congue sapien dapibus placerat. Morbi eu sodales tellus.
+                        </p>
+                    </div>
+                </ScrollViewerElement>
+            </ScrollViewer>
+        </GridElement>
+    </ChildContent>
+</Grid>
