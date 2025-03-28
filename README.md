@@ -24,7 +24,7 @@ Each layout panel has two parts: the panel itself, that provides the properties 
 
 ## Examples
 
-For example, here is how a `Grid` works in BpfLayout ([source](tests\BpfLayoutCoreTests\Pages\IntroExample.razor)):
+For example, here is how a `Grid` works in BpfLayout ([source](tests/BpfLayoutCoreTests/Pages/IntroExample.razor)):
 
 ```
 <Grid RootWidthCss="800px" RootHeightCss="600px">
@@ -116,7 +116,7 @@ Grid row and column sizes are specified using the same format as WPF row and col
 * `"<n>"`: The element will have a fixed size of `<n>` pixels. This is `<n>px` in CSS terms.
 * `"<m>*"`: The element will stretch to fill the leftover space not accounted for by `"auto"` and `"<n>"` rows/columns. The amount of space a row/column will take up is proportional to `<m>` over the sum of all `<m>` for all `"<m>*"` elements in the same row/column definition set. If `"<m>"` is not specified, it defaults to `1`. This is similar, but not identical, to `<m>fr` in CSS terms; the difference is that BpfLayout always normalizes the specified row/column weights so that they sum to 1, whereas CSS does not normalize if the sum falls below zero.  
 
-#### Example ([source](tests\BpfLayoutCoreTests\Pages\GridExample.razor))
+#### Example ([source](tests/BpfLayoutCoreTests/Pages/GridExample.razor))
 
 ```
 @*
@@ -174,7 +174,7 @@ Defines a row in a `Grod` as a child element of the `GridRowDefinitions` paramet
 
 #### Example
 
-See the `Grid` example ([source](tests\BpfLayoutCoreTests\Pages\GridExample.razor)).
+See the `Grid` example ([source](tests/BpfLayoutCoreTests/Pages/GridExample.razor)).
 
 #### Parameters
 * `string Height` (default: `"*"`): The height of this grid row, in WPF row size format.
@@ -189,7 +189,7 @@ Defines a column in a `Grod` as a child element of the `GridColumnDefinitions` p
 
 #### Example
 
-See the `Grid` example ([source](tests\BpfLayoutCoreTests\Pages\GridExample.razor)).
+See the `Grid` example ([source](tests/BpfLayoutCoreTests/Pages/GridExample.razor)).
 
 #### Parameters
 * `string Width` (default: `"*"`): The width of this grid column, in WPF column size format.
@@ -206,7 +206,7 @@ Note that `GridElement` itself does not represent a container that provides spac
 
 #### Example
 
-See the `Grid` example ([source](tests\BpfLayoutCoreTests\Pages\GridExample.razor)).
+See the `Grid` example ([source](tests/BpfLayoutCoreTests/Pages/GridExample.razor)).
 
 #### Parameters
 
@@ -226,7 +226,7 @@ A sub-class of `GridElement` that occupies its own `Grid` row or column and allo
 
 Note that while a `GridSplitter` is a `GridElement` in almost all respects: you must specify the row/column it occipies, must provide a row or column span if you want it to cover the whole grid, and may customize its appearance with child content.
 
-#### Example ([source](tests\BpfLayoutCoreTests\Pages\GridSplitterExample.razor))
+#### Example ([source](tests/BpfLayoutCoreTests/Pages/GridSplitterExample.razor))
 
 ```
 <Grid RootWidthCss="600px" RootHeightCss="600px" RowSnapOffset="50" ColumnDragInterval="10">
@@ -277,7 +277,7 @@ Note that the `Grid` houses a number of parameters related to `GridSplitter` beh
 
 Stacks elements next to each other horizontally or vertically, similar to flex box in CSS. Child elements can align themselves along the opposite axis to the stack panel's stack direction. Stack panels do not natively scroll if they overflow (see `ScrollViewer`). They represent a much simpler element than CSS flex box, and do not have options for wrapping or spacing, though elements may provide a margin to provide fixed spacing. `Grid` is the layout element of choice for precise and flexible spacing control.
 
-#### Example ([source](tests\BpfLayoutCoreTests\Pages\StackPanelExample.razor))
+#### Example ([source](tests/BpfLayoutCoreTests/Pages/StackPanelExample.razor))
 
 ```
 <StackPanel Orientation="@Orientation.Vertical" RootWidthCss="600px" RootHeightCss="100%">
@@ -337,7 +337,7 @@ Note that `StackPanelElement` itself does not represent a container that provide
 
 #### Example
 
-See the `StackPanel` example ([source](tests\BpfLayoutCoreTests\Pages\StackPanelExample.razor)).
+See the `StackPanel` example ([source](tests/BpfLayoutCoreTests/Pages/StackPanelExample.razor)).
 
 #### Parameters
 
@@ -355,7 +355,7 @@ See the `StackPanel` example ([source](tests\BpfLayoutCoreTests\Pages\StackPanel
 
 Provides an region that will scroll instead of clip when its child elements overflow. Note that unlike other layout elements, the `ScrollViewer` is designed to have one single `ScrollViewerElement` under it. The `ScrollViewer` simply defines a scrollable region; it should be laid out and sized using the `StackPanel` and `Grid`.
 
-#### Example ([source](tests\BpfLayoutCoreTests\Pages\ScrollViewerExample.razor))
+#### Example ([source](tests/BpfLayoutCoreTests/Pages/ScrollViewerExample.razor))
 
 ```
 <Grid RootWidthCss="600px" RootHeightCss="100%">
@@ -421,7 +421,7 @@ Note that `ScrollViewerElement` itself does not represent a container that provi
 
 #### Example
 
-See the `ScrollViewer` example ([source](tests\BpfLayoutCoreTests\Pages\ScrollViewerExample.razor)).
+See the `ScrollViewer` example ([source](tests/BpfLayoutCoreTests/Pages/ScrollViewerExample.razor)).
 
 #### Parameters
 
