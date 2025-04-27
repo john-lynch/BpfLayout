@@ -14,9 +14,6 @@ namespace BpfLayout
         {
             get
             {
-                if (!Ordered.Any())
-                    return ["1fr"];
-
                 var unnormalized = Ordered
                     .Zip(TrackGridTemplateByIndex, (t, o) => (Track: t, Override: o))
                     .Select(e => GetGridTemplateCssSize(e.Track, e.Override))
@@ -70,11 +67,13 @@ namespace BpfLayout
         }
 
         public string GetGridTemplateCss(IEnumerable<GridSplitter> splitters) =>
-            string.Join(
-                ' ',
-                Ordered
-                    .Zip(Enumerable.Range(0, int.MaxValue), GridTemplateCssSizes)
-                    .Select(e => UpdateCssSizeForMinMax(e.First, e.Third, splitters.Any(s => GetTrackIndex(e.First.GetSplitterTrackId(s)) is var i && (i == e.Second - 1 || i == e.Second + 1)))));
+            Ordered.Any()
+                ? string.Join(
+                    ' ',
+                    Ordered
+                        .Zip(Enumerable.Range(0, int.MaxValue), GridTemplateCssSizes)
+                        .Select(e => UpdateCssSizeForMinMax(e.First, e.Third, splitters.Any(s => GetTrackIndex(e.First.GetSplitterTrackId(s)) is var i && (i == e.Second - 1 || i == e.Second + 1)))))
+                : "1fr";
 
         string GetGridTemplateCssSize(T track, string? indexTemplateOverride)
         {
