@@ -21,8 +21,8 @@
         <GridRowDefinition Height="*" />
         @if (_showThirdRow)
         {
-            <GridRowDefinition Height="10" />
-            <GridRowDefinition Height="*" />
+            <GridRowDefinition Name="RowSplit" Height="10" />
+            <GridRowDefinition Name="ExtraRow" Height="*" />
         }
     </GridRowDefinitions>
     <ChildContent>
@@ -46,11 +46,11 @@
         </GridElement>
         @if (_showThirdRow)
         {
-            <GridSplitter Row="3" ColumnSpan="3" />
-            <GridElement Column="0" Row="4">
+            <GridSplitter Row="RowSplit" ColumnSpan="3" />
+            <GridElement Column="0" Row="ExtraRow">
                 <Box FillColor="#FFFF00" BorderColor="#FF0000" BorderThickness="3" />
             </GridElement>
-            <GridElement Column="2" Row="4">
+            <GridElement Column="2" Row="ExtraRow">
                 <Box FillColor="#FFFFFF" BorderColor="#FF0000" BorderThickness="3" />
             </GridElement>
         }

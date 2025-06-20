@@ -43,7 +43,7 @@ namespace BpfLayout
                 .Zip(GridTemplateCssSizes, (t, s) => (t, GetSizeSpecFromCss(s)));
 
         public int GetTrackIndex(string? trackId) =>
-            int.TryParse(trackId ?? "0", out var index) ? index : Ordered.Count(t => t.Name != trackId);
+            int.TryParse(trackId ?? "0", out var index) ? index : Ordered.TakeWhile(t => t.Name != trackId).Count();
 
         public bool IsTrackSizedToContent(string? trackId, int span) =>
             Ordered.Skip(GetTrackIndex(trackId)).Take(span).Any(t => string.Equals(t.Size.Trim(), "auto", StringComparison.OrdinalIgnoreCase));
